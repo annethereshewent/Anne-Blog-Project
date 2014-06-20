@@ -44,7 +44,20 @@ else
 ?>
 
 <head>
+	<script src="jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+	
+	<script>
+	function openModal() {
+		$("#postModal").modal({
+			opacity:60, 
+			overlayClose:true,
+			position: ["25%", "25%"]
+		});
+	}
+	</script>
+	
 	<title>Main</title>
+	
 	<style>
 	.post {
 		font-size:16px;
@@ -78,6 +91,24 @@ else
 		text-decoration:none;
 		color:#ffffff;
 	}
+	#postModal {
+		padding-top:20px;
+		padding-right:40px;
+		width:85%;
+		height:90 %;
+	}
+	textarea {
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+		outline:none;
+		resize:none;
+		font-size: 16px;
+		font-family: "Calibri";
+	}
+	#simplemodal-overlay {
+		background: #000;
+	}
 	
 	</style>
 </head>
@@ -86,7 +117,7 @@ else
 	<div style="margin-left: 30%">
 		<div style="margin-left:20px">
 			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
-			<span class="tab"><a class="tlink" href="newpost.php">New</a></span>
+			<span class="tab"><a class="tlink" href="#" onClick="openModal()">New</a></span>
 			<span class="tab">Profile</span>
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
 		</div>
@@ -112,10 +143,21 @@ else
 	</div>
 	
 	<div class="messages" style="color:red"> 
-		<?= $messages ?>">`
+		<?= $messages ?>
 	</div>
 
 </body>
+<div id="postModal" style="display:none">
+	<div class="content">
+		<p style="color:#7A7ACC">Create a New Post</p>
+		<form name="newPost" method="post" action="newpost.php">
+			<textarea name="blogpost" placeholder="Start writing here..." rows="15" cols="50"></textarea>
+			<div class="buttonarea">
+			 	<button type="submit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
+			</div>
+		</form>
+	</div>
+</div>
 <?  
 $conn->close();
 ?>

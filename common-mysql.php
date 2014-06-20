@@ -10,4 +10,3 @@ function remqt($str) {
 	return $conn->real_escape_string($str);
 }
 ?>
-<script src="jquery-2.1.1.min.js" type="text/javascript"></script>
