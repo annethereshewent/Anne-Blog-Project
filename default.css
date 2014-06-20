@@ -1,0 +1,25 @@
+	.post {
+		font-size:16px;
+	}
+	h2 {
+		font-family:"Calibri";
+		color:#EBD6FF;
+		font-size:25px;
+		
+	}
+	.content {
+		font-family:"Calibri";
+		background: #F2F2FA;
+		border:1px solid #000000;
+		-webkit-border-radius: 20px;
+		-moz-border-radius: 20px;
+		border-radius: 20px;
+		//margin: 30px 30px 30px 30px;
+		padding-left: 20px;
+		padding-bottom:20px;
+		padding-right:20px;
+		width: 40%;
+	}
+	body {
+		background:#7A7ACC;
+	}

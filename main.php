@@ -8,39 +8,15 @@ $messages = "";
 $result = null;
 
 
-if (isset($_POST["username"])) {
-	
-	
-	$sql = "select id,username,fname,lname from users where username='".remqt($_POST["username"])."' and password='".remqt($_POST["pass"])."'";
-	
-	$result = $conn->query($sql);
-	unset($_POST);
-	if ($result->num_rows > 0) {
-		$row = $result->fetch_array();
-		//start a new session and store the username in it
-
-		$_SESSION["userid"] = $row["id"];
-		$_SESSION["username"] = $row["username"];	
-
-	}	
-	else 
-		jsRedirect("login.php?error=Y");
-
-	if (!empty($_GET))
-		if ($_GET["success"] == "Y") 
-			$messages += "Post successful! You must be super excited to have a working thingie";
-		else
-			$messages += "An error has occurred.";
-		
-	
-}
 if (isset($_SESSION)) {
 	//get posts
-	$sql = "select id, post, created_on from posts where userID='".$_SESSION["userid"]."' order by id desc";
+	$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$_SESSION["userid"]."' order by id desc";
 	$result = $conn->query($sql);
 }
 else
 	jsRedirect("login.php?error=Y");
+
+
 ?>
 
 <head>
@@ -48,39 +24,39 @@ else
 	
 	<script>
 	function openModal() {
-		$("#postModal").modal({
+		$("#postModal").fadeIn(500).modal({
 			opacity:60, 
 			overlayClose:true,
 			position: ["25%", "25%"]
 		});
 	}
+	function openNewModal() {
+		openModal();
+		$("#newPost").attr("action", "newPost.php");
+	}
+	function openEditModal(pid) {
+		openModal();
+		//need ajax to get contents
+		$.ajax({
+			type: "GET",
+			url: "fetch_post.php?pID=" + pid,
+			dataType: "html",
+			success: function(data) {
+				if (data == "error")
+					return false;
+				$("#editContents").val(data);
+				return true;
+			}
+		});
+		$("#newPost").attr("action", "edit.php?pID=" + pid);
+		$("#blogSubmit").text("Edit"); 
+		
+	}
 	</script>
 	
 	<title>Main</title>
-	
+	<link href="default.css" rel="stylesheet" type="text/css">
 	<style>
-	.post {
-		font-size:16px;
-	}
-	h2 {
-		font-family:"Calibri";
-		color:#EBD6FF;
-		font-size:25px;
-		
-	}
-	.content {
-		font-family:"Calibri";
-		background: #F2F2FA;
-		border:1px solid #000000;
-		-webkit-border-radius: 20px;
-		-moz-border-radius: 20px;
-		border-radius: 20px;
-		//margin: 30px 30px 30px 30px;
-		padding-left: 20px;
-		padding-bottom:20px;
-		padding-right:20px;
-		width: 40%;
-	}
 	.tab {
 		background:#CC3399;
 		width:120px;
@@ -112,12 +88,12 @@ else
 	
 	</style>
 </head>
-<body style="background:#7A7ACC">
+<body>
 	<h2 style="text-align:center">Welcome <?= $_SESSION["username"]?>!</h2>
 	<div style="margin-left: 30%">
 		<div style="margin-left:20px">
 			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
-			<span class="tab"><a class="tlink" href="#" onClick="openModal()">New</a></span>
+			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
 			<span class="tab">Profile</span>
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
 		</div>
@@ -129,8 +105,11 @@ else
 						<div class="post"> 
 							<?= $row["post"]?>
 						</div>
+						<? if ($row["edited"] == 1) { ?>
+							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
+						<? }?>
 						<div class="post-buttons" style="font-size:12px">
-							<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="edit.php?pid=<?= $row["id"] ?>">Edit Post</a>
+							<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
 						</div>
 					</div>
 					<div style="height:20px; width: 20px"></div>
@@ -147,13 +126,13 @@ else
 	</div>
 
 </body>
-<div id="postModal" style="display:none">
+<div id="postModal" style="display:none;clear:both">
 	<div class="content">
 		<p style="color:#7A7ACC">Create a New Post</p>
-		<form name="newPost" method="post" action="newpost.php">
-			<textarea name="blogpost" placeholder="Start writing here..." rows="15" cols="50"></textarea>
+		<form name="newPost" id="newPost" method="post">
+			<textarea name="blogpost" id="editContents" placeholder="Start writing here..." rows="15" cols="50"></textarea>
 			<div class="buttonarea">
-			 	<button type="submit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
+			 	<button type="submit" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
 			</div>
 		</form>
 	</div>

@@ -15,7 +15,8 @@ if (isset($_SESSION["username"])) {
 ?>
 
 <head>
-	<title>Stupid Page</title>
+	<title>The best blog in the whole wide world!</title>
+	<link href="default.css" rel="stylesheet" type="text/css">
 	<style>
 	ul {
 		list-style-type: none;
@@ -53,10 +54,10 @@ if (isset($_SESSION["username"])) {
 	</style>
 	
 </head>
-<body style="background:#7A7ACC">
+<body>
 <div class="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
-	<form name="login" id="login" method="post" action="main.php">
+	<form name="login" id="login" method="post" action="checkLogIn.php">
 		<table>
 			<tr>
 				<td><label>Please Enter a Username:</label></td>
