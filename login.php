@@ -41,7 +41,7 @@ if (isset($_SESSION["username"])) {
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
 		border-bottom: 1px solid #000000;
-		margin: 25% 25% 25% 25%;
+		margin: 10% 25% 25% 25%;
 	}
 	#validateErrors {
 		color:red;
@@ -54,7 +54,7 @@ if (isset($_SESSION["username"])) {
 	
 </head>
 <body>
-	<h1 class="logo">Not Tumblr.</h1>
+	<h1 class="logo">not tumblr.</h1>
 <div class="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">

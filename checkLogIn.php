@@ -5,7 +5,7 @@ include "common-js.php";
 if (isset($_POST)) {
 	
 	
-	$sql = "select id,username,fname,lname from users where username='".remqt($_POST["username"])."' and password='".remqt($_POST["pass"])."'";
+	$sql = "select id,username,fname,lname from users where username='".remqt($_POST["username"])."' and binary password='".remqt($_POST["pass"])."'";
 	
 	$result = $conn->query($sql);
 	unset($_POST);

@@ -8,7 +8,7 @@ $messages = "";
 $result = null;
 
 
-if (isset($_SESSION)) {
+if (isset($_SESSION["userid"])) {
 	//get posts
 	$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$_SESSION["userid"]."' order by id desc";
 	$result = $conn->query($sql);
@@ -59,7 +59,7 @@ else
 	</style>
 </head>
 <body>
-	<h1 class="logo">Not Tumblr.</logo>
+	<h1 class="logo">not tumblr.</logo>
 	<h2 style="text-align:center">Welcome <?= $_SESSION["username"]?>!</h2>
 	<div style="margin-left: 30%">
 		<div style="margin-left:20px">

@@ -1,6 +1,6 @@
 	function openModal() {
 		$("#postModal").fadeIn(500).modal({
-			opacity:60, 
+			opacity:70, 
 			overlayClose:true,
 			position: ["25%", "25%"]
 		});
