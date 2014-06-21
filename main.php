@@ -22,39 +22,9 @@ else
 <head>
 	<script src="jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
 	
-	<script>
-	function openModal() {
-		$("#postModal").fadeIn(500).modal({
-			opacity:60, 
-			overlayClose:true,
-			position: ["25%", "25%"]
-		});
-	}
-	function openNewModal() {
-		openModal();
-		$("#newPost").attr("action", "newPost.php");
-	}
-	function openEditModal(pid) {
-		openModal();
-		//need ajax to get contents
-		$.ajax({
-			type: "GET",
-			url: "fetch_post.php?pID=" + pid,
-			dataType: "html",
-			success: function(data) {
-				if (data == "error")
-					return false;
-				$("#editContents").val(data);
-				return true;
-			}
-		});
-		$("#newPost").attr("action", "edit.php?pID=" + pid);
-		$("#blogSubmit").text("Edit"); 
-		
-	}
-	</script>
+	<script src="main.js" type="text/javascript"></script>
 	
-	<title>Main</title>
+	<title>Welcome!</title>
 	<link href="default.css" rel="stylesheet" type="text/css">
 	<style>
 	.tab {

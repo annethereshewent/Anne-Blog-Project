@@ -23,3 +23,8 @@
 	body {
 		background:#7A7ACC;
 	}
+	.control-text {
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radous: 5px;
+	}

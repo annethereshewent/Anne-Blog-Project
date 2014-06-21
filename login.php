@@ -61,11 +61,11 @@ if (isset($_SESSION["username"])) {
 		<table>
 			<tr>
 				<td><label>Please Enter a Username:</label></td>
-				<td><input type="text" name="username" id="username"></td>
+				<td><input type="text" class="control-text" name="username" id="username"></td>
 			</tr>
 			<tr>
-				<td class="formElement"><label>Please Enter a Password:</label></td>
-				<td><input type="password" name="pass" id="pass"></td>
+				<td><label>Please Enter a Password:</label></td>
+				<td><input type="password" class="control-text" name="pass" id="pass"></td>
 			</tr>
 			<tr>
 				<td><button type="submit" value="Ok">Submit</button>&nbsp;&nbsp;<a style="font-size: 10px" href="register.php">New Member?</a></td>
