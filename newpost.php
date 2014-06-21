@@ -4,10 +4,10 @@ include "common-js.php";
 
 if (!isset($_SESSION))
 	jsRedirect("login.php?error=Y");
-if (!empty($_POST)) {
+if (isset($_POST["htmlContent"])) {
 
 	$sql = "insert into posts (post,userID) values ('".
-		remqt($_POST["blogpost"])."',"
+		remqt($_POST["htmlContent"])."',"
 		.$_SESSION["userid"].")";
 
 	if ($conn->query($sql)) 
@@ -19,6 +19,10 @@ if (!empty($_POST)) {
 	}
 	
 	//perhaps this could even be a modal. just like tumblr
+}
+else {
+	echo "something went wrong";
+	exit;
 }
 /*$conn = mysqli_connect("localhost", "root", "root", "test") or die("Error: ".mysqli_error($conn));
 

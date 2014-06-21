@@ -20,12 +20,16 @@ else
 ?>
 
 <head>
-	<script src="jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+	<script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
 	
-	<script src="main.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 	
 	<title>Welcome!</title>
 	<link href="default.css" rel="stylesheet" type="text/css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
+	<script src="js/froala_editor.min.js"></script>
+	
 	<style>
 	.tab {
 		background:#CC3399;
@@ -43,14 +47,15 @@ else
 		width:85%;
 		height:90 %;
 	}
-	textarea {
+	#editContents {
 		-webkit-border-radius: 15px;
 		-moz-border-radius: 15px;
+		background: white;
+		//border: 1px solid black;
 		border-radius: 15px;
-		outline:none;
-		resize:none;
 		font-size: 16px;
 		font-family: "Calibri";
+		margin-bottom:20px;
 	}
 	#simplemodal-overlay {
 		background: #000;
@@ -101,10 +106,11 @@ else
 	<div class="content">
 		<p style="color:#7A7ACC">Create a New Post</p>
 		<form name="newPost" id="newPost" method="post">
-			<textarea name="blogpost" id="editContents" placeholder="Start writing here..." rows="15" cols="50"></textarea>
-			<div class="buttonarea">
-			 	<button type="submit" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
-			</div>
+				<div name="blogpost" id="editContents" placeholder="Start writing here..." rows="15" cols="50"></div>
+				<div class="buttonarea">
+			 	   <button type="button" onClick="submitContents()" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
+				</div>
+				<input type="hidden" name="htmlContent" id="htmlContent">
 		</form>
 	</div>
 </div>

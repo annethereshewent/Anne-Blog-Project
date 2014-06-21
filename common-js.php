@@ -11,4 +11,4 @@ function jsAlert($str) {
 }
 
 ?>
-<script src="jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
