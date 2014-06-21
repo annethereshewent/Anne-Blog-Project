@@ -17,7 +17,7 @@
 			url: "fetch_post.php?pID=" + pid,
 			dataType: "html",
 			success: function(data) {
-				if (data == "error")
+				if (data == "ERROR")
 					return false;
 				$("#editContents").val(data);
 				return true;

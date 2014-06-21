@@ -28,3 +28,7 @@
 		-moz-border-radius: 5px;
 		border-radous: 5px;
 	}
+	.logo {
+		color: white;
+		font-family:"Bookman Old Style";
+	}

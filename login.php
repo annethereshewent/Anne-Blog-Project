@@ -50,11 +50,11 @@ if (isset($_SESSION["username"])) {
 		border: none;
 		margin-left:20px;
 	}
-
 	</style>
 	
 </head>
 <body>
+	<h1 class="logo">Not Tumblr.</h1>
 <div class="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">

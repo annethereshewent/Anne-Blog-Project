@@ -59,6 +59,7 @@ else
 	</style>
 </head>
 <body>
+	<h1 class="logo">Not Tumblr.</logo>
 	<h2 style="text-align:center">Welcome <?= $_SESSION["username"]?>!</h2>
 	<div style="margin-left: 30%">
 		<div style="margin-left:20px">
@@ -73,7 +74,7 @@ else
 					<div class="content">
 						<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
 						<div class="post"> 
-							<?= $row["post"]?>
+							<p><?= $row["post"]?></p>
 						</div>
 						<? if ($row["edited"] == 1) { ?>
 							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
