@@ -27,8 +27,12 @@
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
 		border-radous: 5px;
+		display:block;
 	}
 	.logo {
 		color: white;
 		font-family:"Bookman Old Style";
+	}
+	.control-label {
+		display:block;
 	}

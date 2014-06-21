@@ -65,7 +65,7 @@ else
 </head>
 <body>
 	<h1 class="logo">not tumblr.</logo>
-	<h2 style="text-align:center">Welcome <?= $_SESSION["username"]?>!</h2>
+	<h2 style="text-align:center">Welcome!</h2>
 	<div style="margin-left: 30%">
 		<div style="margin-left:20px">
 			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>

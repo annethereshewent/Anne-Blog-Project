@@ -36,7 +36,7 @@ if (isset($_SESSION["username"])) {
 		font-family:Calibri;
 	}
 	.logonpanel {
-		width:30%;
+		width:20%;
 		background: #F2F2FA;
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
@@ -46,9 +46,8 @@ if (isset($_SESSION["username"])) {
 	#validateErrors {
 		color:red;
 	}
-	table {
-		border: none;
-		margin-left:20px;
+	.inputs {
+		margin-left:60px;
 	}
 	</style>
 	
@@ -58,20 +57,31 @@ if (isset($_SESSION["username"])) {
 <div class="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">
-		<table>
+		<!-- <table>
 			<tr>
-				<td><label>Please Enter a Username:</label></td>
+				<td><label>E-mail:</label></td>
 				<td><input type="text" class="control-text" name="username" id="username"></td>
 			</tr>
 			<tr>
-				<td><label>Please Enter a Password:</label></td>
+				<td><label>Password:</label></td>
 				<td><input type="password" class="control-text" name="pass" id="pass"></td>
 			</tr>
 			<tr>
 				<td><button type="submit" value="Ok">Submit</button>&nbsp;&nbsp;<a style="font-size: 10px" href="register.php">New Member?</a></td>
 	
 			</tr>
-		</table>
+		</table> -->
+		<div class="inputs">
+			<label class="control-label">E-mail:</label>
+			<input type="text" name="username" class="control-text">
+		</div>
+		<div class="inputs">
+			<label class="control-label">Password:</label>
+			<input type="password" name="pass" class="control-text">
+		</div>
+		<div class="inputs">
+			<button type="submit">Submit</button>&nbsp;&nbsp;<a style="font-size: 10px" href="register.php" >New Member?</a>
+		</div>
 		<div id="validate Errors"><?= $msg ?></div>
 	</form>
 </div>
