@@ -1,7 +1,4 @@
 <?
-/*
-jquery and two javascript functions that come usefuil in php.
-*/
 function jsRedirect($url) {
 	echo "<script type=\"text/javascript\">\n"
 		."location.href='".$url."'</script>";

@@ -31,7 +31,12 @@ function validate() {
 	if (check) {
 		if ($("#pass1").val() == $("#pass2").val()) {
 			//call ajax to see if email exists
-
+			if (usernameExists($("#email").val())) {
+				var user_warning = $("#email").next();
+				$(user_warning).html("<i>e-mail is already in use.</i>");
+				$(user_warning).show();
+				return false;
+			}
 			$("#register").submit();
 		}
 		else {
@@ -40,4 +45,22 @@ function validate() {
 			$(errormsg).show();
 		}
 	}
+}
+
+function usernameExists(username) {
+	//need ajax to get contents
+	return true;
+	$.ajax({
+		type: "GET",
+		url: "check_username.php?user=" + username,
+		dataType: "html",
+		success: function(data) {
+			alert ("we made it all the way here! data = " + data);
+			return true;
+			if (data == "true")
+				return true;
+			return false;
+		}
+	});
+
 }

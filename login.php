@@ -93,7 +93,7 @@ if (isset($_SESSION["username"])) {
 <div class="content" id="registerpanel" style="display:none;clear:both;width:20%">
 	<p><i>Please fill in the required fields.</i></p>
 	<div>
-		<form name="register" id="register" method="post" action="register.php">
+		<form name="register" id="register" method="post" action="checkRegister.php">
 			<div class="inputs">
 				<label class="control-label">Please Enter E-mail:</label>
 				<input type="text" name="email" class="control-text" id="email"><span class="error"><i>(Required)</i></span>

@@ -10,6 +10,7 @@ if (isset($_POST)) {
 	$sql = "insert into users (username, password) values (".
 		"'".$_POST["email"]."',".
 		"'".$_POST["pass1"."')";
+	echo $sql;
 	if ($conn->query($sql)) {
 		echo "test?";
 		$_SESSION["username"] = $_POST["email"];
@@ -22,9 +23,7 @@ if (isset($_POST)) {
 	else {
 		echo "an error has occured: ".$conn->error();
 		exit;
-	}
-
-	
+	}	
 }
 else {
 	echo "post variables not set?";

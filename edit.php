@@ -7,7 +7,7 @@ if (isset($_GET["pID"]) && isset($_POST["htmlContent"])) {
 			remqt($_POST["htmlContent"])."',".
 				"edited_on = CURRENT_TIMESTAMP,".
 				"edited = 1".
-				" where id= ".$_GET["pID"];
+				" where id= ".remqt($_GET["pID"]);
 
 	if ($result = $conn->query($sql)) {
 		jsRedirect("main.php?success=Y");

@@ -6,12 +6,14 @@ include "common-js.php";
 $row = null;
 $messages = "";
 $result = null;
-
+$noRows = false;
 
 if (isset($_SESSION["userid"])) {
 	//get posts
 	$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$_SESSION["userid"]."' order by id desc";
 	$result = $conn->query($sql);
+	if ($result->num_rows == 0)
+		$noRows= true;
 }
 else
 	jsRedirect("login.php?error=Y");
@@ -75,21 +77,29 @@ else
 		</div>
 
 			<? if ($result != null) {
-				while ($row = mysqli_fetch_array($result)) { ?>
-					<div class="content">
-						<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
-						<div class="post"> 
-							<p><?= $row["post"]?></p>
-						</div>
-						<? if ($row["edited"] == 1) { ?>
-							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
-						<? }?>
-						<div class="post-buttons" style="font-size:12px">
-							<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
-						</div>
+				if ($noRows) { ?>
+					<div class="content" style="color:grey">
+						<i><h3>Your blog is empty. :(</h3>
+						<p>give your blog some loving and create your first post! We are so excited!</p></i>
 					</div>
-					<div style="height:20px; width: 20px"></div>
+				<? } 
+				else {
+					while ($row = mysqli_fetch_array($result)) { ?>
+						<div class="content">
+							<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
+							<div class="post"> 
+								<p><?= $row["post"]?></p>
+							</div>
+							<? if ($row["edited"] == 1) { ?>
+								<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
+							<? }?>
+							<div class="post-buttons" style="font-size:12px">
+								<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+							</div>
+						</div>
+						<div style="height:20px; width: 20px"></div>
 		<?
+					}
 				}
 			}
 		?>
