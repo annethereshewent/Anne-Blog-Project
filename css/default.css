@@ -7,6 +7,16 @@
 		font-size:25px;
 		
 	}
+	.tab {
+		background:#CC3399;
+		width:120px;
+		border:1px solid #7A1F5C;
+		color:#ffffff;
+	}
+	a.tlink {
+		text-decoration:none;
+		color:#ffffff;
+	}
 	.content {
 		font-family:"Calibri";
 		background: #F2F2FA;
@@ -19,6 +29,12 @@
 		padding-bottom:20px;
 		padding-right:20px;
 		width: 40%;
+	}
+	.tab-container {
+		margin-left:20px;
+	}
+	.main {
+		margin-left: 30%;
 	}
 	body {
 		background:#7A7ACC;

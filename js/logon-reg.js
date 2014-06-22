@@ -15,6 +15,7 @@ function validate() {
 	$(".error").each(function() {
 		$(this).hide();
 	});
+	$("pass-alert").hide();
 	var check = true;
 	if ($("#email").val() == "") {
 		$("#email").next().show();
@@ -30,14 +31,8 @@ function validate() {
 	}
 	if (check) {
 		if ($("#pass1").val() == $("#pass2").val()) {
-			//call ajax to see if email exists
-			if (usernameExists($("#email").val())) {
-				var user_warning = $("#email").next();
-				$(user_warning).html("<i>e-mail is already in use.</i>");
-				$(user_warning).show();
-				return false;
-			}
-			$("#register").submit();
+			//call ajax to see if email exists. this will submit form if it does
+			usernameExists($("#email").val());
 		}
 		else {
 			var errormsg = $("#pass2").next();
@@ -49,18 +44,20 @@ function validate() {
 
 function usernameExists(username) {
 	//need ajax to get contents
-	return true;
+	var temp = "";
 	$.ajax({
 		type: "GET",
 		url: "check_username.php?user=" + username,
-		dataType: "html",
 		success: function(data) {
-			alert ("we made it all the way here! data = " + data);
-			return true;
-			if (data == "true")
-				return true;
-			return false;
+			if (data == "true") {
+				var user_warning = $("#email").next();
+				$(user_warning).html("<i>e-mail is already in use.</i>");
+				$(user_warning).show();
+				$("#pass-alert").html("<a href=\"forgotpassword.php\"><i>Forgot Password?</i></a>")
+				$("#pass-alert").fadeIn(300).show();
+				return false;
+			}
+			$("#register").submit();
 		}
 	});
-
 }

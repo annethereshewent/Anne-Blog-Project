@@ -4,7 +4,7 @@ $(function(){
 		paragraphy: true,
 		width: 400,
 		height:250,
-		buttons: ["indent", "outdent", "strikeThrough", "bold", "italic", "underline", "insertUnorderedList", "insertOrderedList", "fontSize", "color"],
+		buttons: ["indent", "outdent", "strikeThrough", "bold", "italic", "underline", "insertUnorderedList", "insertOrderedList"],
 		inverseSkin: true,
 	});
 });
@@ -26,19 +26,18 @@ function openNewModal() {
 	$("#newPost").attr("action", "newPost.php");
 }
 function openEditModal(pid) {
-	openModal();
 	//need ajax to get contents
 	$.ajax({
 		type: "GET",
 		url: "fetch_post.php?pID=" + pid,
 		dataType: "html",
 		success: function(data) {
-			if (data == "ERROR")
+			if (data == "false")
 				return false;
 			$("#editContents").editable("setHTML",data);
-			return true;
+			openModal();
+			$("#newPost").attr("action", "edit.php?pID=" + pid);
+			$("#blogSubmit").text("Edit"); 
 		}
 	});
-	$("#newPost").attr("action", "edit.php?pID=" + pid);
-	$("#blogSubmit").text("Edit"); 
 }

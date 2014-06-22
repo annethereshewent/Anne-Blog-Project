@@ -1,26 +1,25 @@
 <?
-include "common.php";
-require_once "comment.php";
-
-if (!empty($_GET)) {
-	$sql = "select id,comment,created_on from comments where postID = '".remqt($_GET["pID"])."' order by parent, id";
-	$result = $conn->query($sql);
-	while ($row = $conn->fetch_array($result) {
-		
-	}
-}	
-	
-
+include "comment.php";
+include "common-mysql.php";
 	
 ?>
 <html>
 <head>
-	
+<link href="css/default.css" rel="stylesheet" type="text/css">	
 	
 	
 </head>
 <body>
-	
+	<div class="main">
+		<div class="tab-container">
+			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
+			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
+			<span class="tab">Profile</span>
+			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
+		</div>
+		<div class="content">
+			<?= (isset($_GET["pID"])) ? fetch_post($_GET["pID"]) : "" ?>
+		</div>
 	
 	
 	

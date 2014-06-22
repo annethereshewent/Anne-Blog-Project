@@ -5,8 +5,7 @@ include "common-js.php";
 echo "hello?";
 if (isset($_POST)) {
 	//assuming all validation passes
-	echo "test? can anyone hear me?: " $_POST["email"]." ".$_POST["pass1"];
-	exit;
+
 	$sql = "insert into users (username, password) values (".
 		"'".$_POST["email"]."',".
 		"'".$_POST["pass1"."')";

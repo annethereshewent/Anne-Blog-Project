@@ -27,22 +27,13 @@ else
 	<script src="js/main.js" type="text/javascript"></script>
 	
 	<title>Welcome!</title>
-	<link href="default.css" rel="stylesheet" type="text/css">
+	<link href="css/css/default.css" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
 	<script src="js/froala_editor.min.js"></script>
 	
 	<style>
-	.tab {
-		background:#CC3399;
-		width:120px;
-		border:1px solid #7A1F5C;
-		color:#ffffff;
-	}
-	a.tlink {
-		text-decoration:none;
-		color:#ffffff;
-	}
+
 	#postModal {
 		padding-top:20px;
 		padding-right:40px;

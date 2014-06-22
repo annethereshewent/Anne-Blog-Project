@@ -67,6 +67,11 @@ if (isset($_SESSION["username"])) {
 		margin: 10% 25% 25% 25%;
 		font-size: 12px;
 	}
+	#pass-alert {
+		display:none;
+		font-size:10px;
+		text-align:center;
+	}
 	</style>
 	
 </head>
@@ -113,6 +118,7 @@ if (isset($_SESSION["username"])) {
 				<button type="button" onClick="validate()">Register</button>
 				<button type="button" onClick="displayLogonPanel()">Back</button>
 			</div>
+			<p id="pass-alert"></p>
 		</form>
 	</div>
 </div>
