@@ -1,4 +1,5 @@
 <?php 
+include "config.php";
 session_start();
 class Common {
 	public static function redirect($url) {
@@ -13,14 +14,13 @@ class Common {
 
 class MyDB {
 	private $mysqli; 
-	const DB = "blog";
 	public function remqt($str) {
 		
 		$str = str_replace("\n","<br>", $str);
 		return $this->mysqli->real_escape_string($str);
 	}
-	public function __construct($host, $user, $pass) {
-		$this->mysqli = new mysqli($host, $user, $pass, self::DB) or die ("Error: ".mysqli_connect_error());
+	public function __construct($host, $user, $pass,$db) {
+		$this->mysqli = new mysqli($host, $user, $pass,$db) or die ("Error: ".mysqli_connect_error());
 	}
 	/* 
 	Primarily for ajax calls
@@ -51,12 +51,22 @@ class MyDB {
 
 		if ($pID == "")
 			return null;
-
+		$sql = "select id, post, created_on, edited_on, edited from posts where id = ".$this->remqt($pID);
+		$result = $this->mysqli->query($sql);
+		if ($result->num_rows == 1) {
+			//success
+			return $result->fetch_array();
+		} 
+		return null;
+	}
+	public function fetch_all_user_posts($userID) {
+		$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$userID."' order by id desc";
+		return $this->mysqli->query($sql);
 	}
 	public function error() {
 		return $this->mysqli->error();
 	}
 }
-$conn = new MyDB("localhost", "webaccess","n0t-tUmblr34!");
+$conn = new MyDB($config["HOST"], $config["USERNAME"],$config["PASSWORD"],$config["DB"]);
 ?>
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>

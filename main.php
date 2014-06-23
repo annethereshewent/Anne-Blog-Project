@@ -9,8 +9,7 @@ $noRows = false;
 
 if (isset($_SESSION["userid"])) {
 	//get posts
-	$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$_SESSION["userid"]."' order by id desc";
-	$result = $conn->query($sql);
+	$result = $conn->fetch_all_user_posts($_SESSION["userid"]);
 	if ($result->num_rows == 0)
 		$noRows= true;
 }
@@ -87,7 +86,7 @@ else
 								<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
 							</div>
 						</div>
-						<div style="height:20px; width: 20px"></div>
+						<div class="content-divider"></div>
 		<?
 					}
 				}
