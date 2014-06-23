@@ -1,7 +1,5 @@
 <? 
-session_start();
-
-include "common-js.php";
+include "common.php";
 $msg = "";
 
 if (!empty($_GET)) {
@@ -9,14 +7,14 @@ if (!empty($_GET)) {
 		$msg = "<p class=\"error\">Imposter detected! Red alert! weeooowweeeeowoeeooo</p>";
 } 
 if (isset($_SESSION["username"])) { 
-	jsRedirect("main.php");
+	Common::redirect("main.php");
 	
 }
 ?>
 
 <head>
 	<title>The best blog in the whole wide world!</title>
-	<link href="default.css" rel="stylesheet" type="text/css">
+	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/logon-reg.js" type="text/javascript"></script>
 	<style>
 	ul {
@@ -77,6 +75,7 @@ if (isset($_SESSION["username"])) {
 </head>
 <body>
 	<h1 class="logo">not tumblr.</h1>
+	<p class="error" style="text-align:center"><?= $msg ?>
 <div class="panel" id="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">

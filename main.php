@@ -1,6 +1,5 @@
 <?
-include "common-mysql.php";
-include "common-js.php";
+include "common.php";
 
 
 $row = null;
@@ -16,7 +15,7 @@ if (isset($_SESSION["userid"])) {
 		$noRows= true;
 }
 else
-	jsRedirect("login.php?error=Y");
+	Common::redirect("login.php?error=Y");
 
 
 ?>
@@ -27,7 +26,7 @@ else
 	<script src="js/main.js" type="text/javascript"></script>
 	
 	<title>Welcome!</title>
-	<link href="css/css/default.css" rel="stylesheet" type="text/css">
+	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
 	<script src="js/froala_editor.min.js"></script>
@@ -35,10 +34,9 @@ else
 	<style>
 
 	#postModal {
-		padding-top:20px;
-		padding-right:40px;
+
 		width:85%;
-		height:90 %;
+		height:60%;
 	}
 	#editContents {
 		-webkit-border-radius: 15px;
@@ -49,6 +47,7 @@ else
 		font-size: 16px;
 		font-family: "Calibri";
 		margin-bottom:20px;
+		margin-left:10px;
 	}
 	#simplemodal-overlay {
 		background: #000;
@@ -57,10 +56,10 @@ else
 	</style>
 </head>
 <body>
-	<h1 class="logo">not tumblr.</logo>
+	<h1 class="logo">not tumblr.</h1>
 	<h2 style="text-align:center">Welcome!</h2>
-	<div style="margin-left: 30%">
-		<div style="margin-left:20px">
+	<div class="main">
+		<div class="tab-container">
 			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
 			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
 			<span class="tab">Profile</span>
@@ -103,11 +102,11 @@ else
 	</div>
 
 </body>
-<div id="postModal" style="display:none;clear:both">
+<div id="postModal" style="display:none">
 	<div class="content">
-		<p style="color:#7A7ACC">Create a New Post</p>
+		<p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
 		<form name="newPost" id="newPost" method="post">
-				<div name="blogpost" id="editContents" placeholder="Start writing here..." rows="15" cols="50"></div>
+				<div name="blogpost" id="editContents"></div>
 				<div class="buttonarea">
 			 	   <button type="button" onClick="submitContents()" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
 				</div>
@@ -115,6 +114,3 @@ else
 		</form>
 	</div>
 </div>
-<?  
-$conn->close();
-?>

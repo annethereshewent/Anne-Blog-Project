@@ -1,11 +1,10 @@
 <?php 
-include "common-mysql.php";
-include "common-js.php";
+include "common.php";
 
 if (isset($_POST)) {
 	
 	
-	$sql = "select id,username,fname,lname from users where username='".remqt($_POST["username"])."' and binary password='".remqt($_POST["pass"])."'";
+	$sql = "select id,username,fname,lname from users where username='".$conn->remqt($_POST["username"])."' and binary password='".$conn->remqt($_POST["pass"])."'";
 	
 	$result = $conn->query($sql);
 	unset($_POST);
@@ -17,10 +16,10 @@ if (isset($_POST)) {
 		$_SESSION["username"] = $row["username"];
 		$sql = "";
 		$result = null;	
-		jsRedirect("main.php");
+		Common::redirect("main.php");
 	}	
 	else 
-		jsRedirect("login.php?error=Y");
+		Common::redirect("login.php?error=Y");
 
 	if (!empty($_GET))
 		if ($_GET["success"] == "Y") 

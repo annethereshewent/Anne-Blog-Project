@@ -1,5 +1,5 @@
 <?
-include "common-mysql.php";
+include "common.php";
 
 if (isset($_GET["user"])) {
 	$sql = "select username from users where username = '".$_GET["user"]."'";
@@ -8,8 +8,5 @@ if (isset($_GET["user"])) {
 		echo "true";
 	else
 		echo "false";
-
 }
-
-
 ?>

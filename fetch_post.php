@@ -1,10 +1,10 @@
 <?php
-include "common-mysql.php";
+include "common.php";
 
 $postID = (isset($_GET["pID"])) ? $_GET["pID"] : "";
 if ($postID == "") {
 	echo "false";
 	return;
 }
-else echo fetch_post($postID);
+else $conn->fetch_contents($postID);
 ?>

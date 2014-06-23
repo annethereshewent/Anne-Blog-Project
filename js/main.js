@@ -1,14 +1,16 @@
 $(function(){
+	initEditor();
+});
+function initEditor() {
 	$('#editContents').editable({
 		inlineMode: false,
 		paragraphy: true,
-		width: 400,
-		height:250,
+		width: "95%",
+		height: "95%",
 		buttons: ["indent", "outdent", "strikeThrough", "bold", "italic", "underline", "insertUnorderedList", "insertOrderedList"],
 		inverseSkin: true,
 	});
-});
-
+}
 function submitContents() {
 	var content = $("#editContents").editable("getHTML");
 	$("#htmlContent").val(content);
@@ -23,7 +25,7 @@ function openModal() {
 }
 function openNewModal() {
 	openModal();
-	$("#newPost").attr("action", "newPost.php");
+	$("#newPost").attr("action", "newpost.php");
 }
 function openEditModal(pid) {
 	//need ajax to get contents
@@ -34,8 +36,10 @@ function openEditModal(pid) {
 		success: function(data) {
 			if (data == "false")
 				return false;
-			$("#editContents").editable("setHTML",data);
 			openModal();
+			initEditor();
+			$("#editContents").editable("focus");
+			$("#editContents").editable("setHTML",data);
 			$("#newPost").attr("action", "edit.php?pID=" + pid);
 			$("#blogSubmit").text("Edit"); 
 		}

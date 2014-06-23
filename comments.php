@@ -1,7 +1,7 @@
 <?
-include "comment.php";
-include "common-mysql.php";
-	
+require_once "comment.php";
+include "common.php";
+
 ?>
 <html>
 <head>
@@ -10,6 +10,7 @@ include "common-mysql.php";
 	
 </head>
 <body>
+	<h1 class="logo">not tumblr.</h1>
 	<div class="main">
 		<div class="tab-container">
 			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
@@ -18,10 +19,7 @@ include "common-mysql.php";
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
 		</div>
 		<div class="content">
-			<?= (isset($_GET["pID"])) ? fetch_post($_GET["pID"]) : "" ?>
+			<?= (isset($_GET["pid"]) ? fetch_post($_GET["pid"]) : "") ?>
 		</div>
-	
-	
-	
 </body>
 </html>
