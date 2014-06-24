@@ -16,6 +16,7 @@ if (isset($_SESSION["username"])) {
 	<title>The best blog in the whole wide world!</title>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/logon-reg.js" type="text/javascript"></script>
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<style>
 	ul {
 		list-style-type: none;
@@ -36,15 +37,16 @@ if (isset($_SESSION["username"])) {
 	p {
 		font-family:Calibri;
 	}
-	.panel {
-		width:250px;
+	#logonpanel {
+		width:325px;
+		//height:157px;
 		background: #F2F2FA;
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
 		border-bottom: 1px solid #000000;
-		margin: 10% 25% 25% 25%;
+		margin: 200px 200px 200px 350px;
 		font-family: Calibri;
-		font-size: 12px;
+		font-size: 16px;
 	}
 	#validate {
 		font-weight:bold;
@@ -53,7 +55,7 @@ if (isset($_SESSION["username"])) {
 		color: #B20000;
 	}
 	.inputs {
-		margin-left:60px;
+		margin-left:80px;
 	}
 	h3 {
 		padding: 0;
@@ -62,8 +64,10 @@ if (isset($_SESSION["username"])) {
 		text-align:center;
 	}
 	#registerpanel {
-		margin: 10% 25% 25% 25%;
+		margin: 140px 200px 200px 200px;
 		font-size: 12px;
+		display:none;
+		width:275px;
 	}
 	#pass-alert {
 		display:none;
@@ -76,7 +80,7 @@ if (isset($_SESSION["username"])) {
 <body>
 	<h1 class="logo">not tumblr.</h1>
 	<p class="error" style="text-align:center"><?= $msg ?>
-<div class="panel" id="logonpanel">
+<div id="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">
 		<div class="inputs">
@@ -88,30 +92,30 @@ if (isset($_SESSION["username"])) {
 			<input type="password" name="pass" class="control-text">
 		</div>
 		<div class="inputs">
-			<button type="submit">Log In</button>&nbsp;&nbsp;<a style="font-size: 10px" href="#" onClick="displayRegPanel()" >New Member?</a>
+			<button type="submit">Log In</button>&nbsp;&nbsp;<a style="font-size: 12px" href="#" onClick="displayRegPanel()" >New Member?</a>
 		</div>
 
 	</form>
 </div>
 <div id="validate"><?= $msg ?></div>
-<div class="content" id="registerpanel" style="display:none;clear:both;width:20%">
+<div class="content" id="registerpanel" style="">
 	<p><i>Please fill in the required fields.</i></p>
 	<div>
 		<form name="register" id="register" method="post" action="checkRegister.php">
 			<div class="inputs">
 				<label class="control-label">Please Enter E-mail:</label>
-				<input type="text" name="email" class="control-text" id="email"><span class="error"><i>(Required)</i></span>
+				<input type="text" name="email" class="control-text lg" id="email"><span class="error"><i>(Required)</i></span>
 			</div>
 			<div class="inputs" style="padding-bottom:10px">
-				<label class="control-label"><i>(This will be used as your log in.)</i></label>
+				<label class="control-label "><i>(This will be used as your log in.)</i></label>
 			</div>
 			<div class="inputs">
 				<label class="control-label">Please Enter Password:</label>
-				<input class="control-text" type="password" name="pass1" id="pass1"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
+				<input class="control-text lg" type="password" name="pass1" id="pass1"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
 			</div>
 			<div class="inputs" style="margin-bottom:20px">
 				<label class="control-label">Please Re-enter Password:</label>
-				<input class="control-text" type="password" name="pass2" id="pass2"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
+				<input class="control-text lg" type="password" name="pass2" id="pass2"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
 			</div>
 			<div class="inputs">
 				<button type="button" onClick="validate()">Register</button>

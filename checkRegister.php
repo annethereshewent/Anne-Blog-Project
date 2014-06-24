@@ -17,7 +17,7 @@ if (isset($_POST)) {
 		Common::redirect("main.php");
 	}
 	else {
-		echo "<b>MySQL error:</b> ".$conn->error;
+		echo "<b>MySQL error:</b> ".$conn->error();
 	}
 
 }

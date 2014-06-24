@@ -4,12 +4,12 @@
 	h2 {
 		font-family:"Calibri";
 		color:#EBD6FF;
-		font-size:25px;
+		font-size:30px;
 		
 	}
 	.tab {
 		background:#CC3399;
-		width:120px;
+		width:200px;
 		border:1px solid #7A1F5C;
 		color:#ffffff;
 	}
@@ -28,7 +28,7 @@
 		padding-left: 20px;
 		padding-bottom:20px;
 		padding-right:20px;
-		width: 40%;
+		width: 450px;
 	}
 	.tab-container {
 		margin-left:20px;
@@ -38,7 +38,7 @@
 		width: 20px
 	}
 	.main {
-		margin-left: 30%;
+		margin-left: 300px;
 	}
 	body {
 		background:#7A7ACC;
@@ -49,9 +49,13 @@
 		border-radous: 5px;
 		display:block;
 	}
+	.control-text.lg {
+		width:130px;
+	}
 	.logo {
 		color: white;
 		font-family:"Bookman Old Style";
+		font-size:42px;
 	}
 	.control-label {
 		display:block;

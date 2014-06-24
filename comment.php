@@ -12,13 +12,28 @@ class Comment {
 		$this->parent     = $row["parent"];
 	}
 	public function __toString() {
-		return "<p><b>************</b></p>
-				<p>parent = ".$this->parent." id = ".$this->id."</p>
-				<p>comment: ".$this->comment."</p>".
-				"<p><b>************</b></p>";
+		return
+		'<div class="content comment-container">
+		<p style="font-size:small;"><i>Creation Date:</i>: '.$this->created_on.
+		'<div class="post"><p>'.
+		$this->comment.'</p<</div>
+		</div>';
 	}
 	public function addComment($comment) {
 		
+	}
+		/*recursive function*/
+	public static function buildCommentTree($commentArray,$root) {
+		if (!isset($commentArray[$root])) {
+			return;	
+		}
+		foreach ($commentArray[$root] as $comment) {
+			$temp = __CLASS__;
+			echo '<p>'.$comment->comment.'</p>'.
+				 '<div style="margin-left:10px;">';
+			echo Comment::buildCommentTree($commentArray,$comment->id);
+			echo '</div>';
+		}	
 	}
 
 }

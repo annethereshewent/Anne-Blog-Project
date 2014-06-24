@@ -5,8 +5,8 @@ function initEditor() {
 	$('#editContents').editable({
 		inlineMode: false,
 		paragraphy: true,
-		width: "95%",
-		height: "95%",
+		width: "350px",
+		height: "250px",
 		buttons: ["indent", "outdent", "strikeThrough", "bold", "italic", "underline", "insertUnorderedList", "insertOrderedList"],
 		inverseSkin: true,
 	});

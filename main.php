@@ -20,7 +20,9 @@ else
 ?>
 
 <head>
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+	<script src="js/froala_editor.min.js"></script>
 	
 	<script src="js/main.js" type="text/javascript"></script>
 	
@@ -28,14 +30,14 @@ else
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
-	<script src="js/froala_editor.min.js"></script>
+	
+
 	
 	<style>
 
 	#postModal {
-
-		width:85%;
-		height:60%;
+		width: 375px;
+		height: 420px;
 	}
 	#editContents {
 		-webkit-border-radius: 15px;
@@ -45,7 +47,7 @@ else
 		border-radius: 15px;
 		font-size: 16px;
 		font-family: "Calibri";
-		margin-bottom:20px;
+		margin-bottom:10px;
 		margin-left:10px;
 	}
 	#simplemodal-overlay {
@@ -101,15 +103,14 @@ else
 	</div>
 
 </body>
-<div id="postModal" style="display:none">
-	<div class="content">
-		<p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
-		<form name="newPost" id="newPost" method="post">
-				<div name="blogpost" id="editContents"></div>
-				<div class="buttonarea">
-			 	   <button type="button" onClick="submitContents()" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
-				</div>
-				<input type="hidden" name="htmlContent" id="htmlContent">
-		</form>
-	</div>
+
+<div class="content" id="postModal" style="display:none">
+	<p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
+	<form name="newPost" id="newPost" method="post">
+			<div name="blogpost" id="editContents"></div>
+			<div  style="margin-left:15px;"class="buttonarea">
+		 	   <button type="button" onClick="submitContents()" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
+			</div>
+			<input type="hidden" name="htmlContent" id="htmlContent">
+	</form>
 </div>

@@ -8,7 +8,7 @@ if (isset($_GET["pid"]) && $_GET["pid"] != "") {
 
 	$commentArray = $conn->fetch_post_comments($postID);
 
-	//$commentTreeStr = Common::buildCommentTree($commentArray,0);
+	//$commentTreeStr = Comment::buildCommentTree($commentArray,0);
 
 }
 else
@@ -17,31 +17,34 @@ else
 <html>
 <head>	
 	<style>
-	#comment-textbox-container {
-		width: 60%;
-		height:20%;
-		margin-left:-25px;
+	.content.comment-container {
+		width: 800px;
+		height:160px;
+		margin-left:-60px;
 		display:none;
 	}
 	#comment {
-		width:95%;
-		height:65%;
+		width:740px;
+		height:100px;
 		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
 		margin-top:30px;
+		margin-left:10px;
 		outline:none;
 		resize:none;
 	}
 	</style>
-	<link href="css/default.css" rel="stylesheet" type="text/css">	
-	<script src="js/comment.js" type="text/javascript"></script>
+	<link href="css/default.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("#comment-submit").attr("disabled","true");
 		$("#comment").blur(function() {
-			if ($(this).val != "")
-				$("#comment-submit").attr("enabled","true");
+			if ($(this).val() != "")
+				$("#comment-submit").removeAttr("disabled");
+			else
+				$("#comment-submit").attr("disabled","true");
 		});
 	});
 	</script>
@@ -62,22 +65,22 @@ else
 				<p><?= $post["post"]?></p>
 			</div>
 			<div class="post-buttons" style="font-size:12px">
-				<a href="#" onClick="$('#comment-container').fadeIn(300).show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
+				<a href="#" onClick="$('#textbox-container').fadeIn(300).show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
 			</div>
 		</div>
 		<div class="content-divider"></div>
-		<div class="content" id="comment-textbox-container">
+		<div class="content comment-container" id="textbox-container">
 			<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
-				<textarea name="comment" id="comment" required></textarea>
+				<textarea name="comment" id="comment" placeholder="Enter comment here..."></textarea>
 				<input type="hidden" name="pid" value="<?= $postID ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" id="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#comment-container').fadeOut(300).hide()">Cancel</button>
+					<button type="submit" id="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#comment-textbox-container').fadeOut(300).hide()">Cancel</button>
 				</div>
 			</form>
 		</div>
 		<div class="content-divider"></div>
 		<div class="content" id="posted-comments">
-			<? Common::buildCommentTree($commentArray,0); ?>
+			<? Comment::buildCommentTree($commentArray,0); ?>
 		</div>
 </body>
 </html>
