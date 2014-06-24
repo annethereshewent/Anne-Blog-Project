@@ -51,6 +51,22 @@ class MyDB {
 		$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$userID."' order by id desc";
 		return $this->mysqli->query($sql);
 	}
+	public function fetch_user_posts_by_page($userID,$page) {
+		$limit = "";
+
+		if ($page == null || $page == 1) 
+			$limit = "limit 15";
+		else 
+			$limit = "limit ".(15*($page-1)).",15";
+
+
+		$sql = 
+		"select id, post, created_on, edited_on, edited 
+		from posts 
+		where userID='".$userID."'
+		order by id desc ".$limit;
+		return $this->mysqli->query($sql);
+	}
 	public function error() {
 		return $this->mysqli->error;
 	}

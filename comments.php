@@ -79,8 +79,6 @@ else
 			</form>
 		</div>
 		<div class="content-divider"></div>
-		<div class="content" id="posted-comments">
-			<? Comment::buildCommentTree($commentArray,0); ?>
-		</div>
+		<? Comment::buildCommentTree($commentArray,0); ?>
 </body>
 </html>

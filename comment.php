@@ -13,11 +13,12 @@ class Comment {
 	}
 	public function __toString() {
 		return
-		'<div class="content comment-container">
+		'<div class="content comment-container" style="display:block;">
 		<p style="font-size:small;"><i>Creation Date:</i>: '.$this->created_on.
 		'<div class="post"><p>'.
 		$this->comment.'</p<</div>
-		</div>';
+		</div>
+		<div class="content-divider"></div>';
 	}
 	public function addComment($comment) {
 		
@@ -29,7 +30,7 @@ class Comment {
 		}
 		foreach ($commentArray[$root] as $comment) {
 			$temp = __CLASS__;
-			echo '<p>'.$comment->comment.'</p>'.
+			echo '<p>'.$comment.'</p>'.
 				 '<div style="margin-left:10px;">';
 			echo Comment::buildCommentTree($commentArray,$comment->id);
 			echo '</div>';

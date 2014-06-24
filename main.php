@@ -9,7 +9,12 @@ $noRows = false;
 
 if (isset($_SESSION["userid"])) {
 	//get posts
-	$result = $conn->fetch_all_user_posts($_SESSION["userid"]);
+	$pageNumber = null;
+	if (isset($_GET["page"])) 
+		$pageNumber = $_GET["page"];
+	
+
+	$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
 	if ($result->num_rows == 0)
 		$noRows= true;
 }
