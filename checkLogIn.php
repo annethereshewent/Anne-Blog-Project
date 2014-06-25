@@ -1,11 +1,8 @@
 <?php 
 include "common.php";
 
-if (isset($_POST)) {
-	
-	
+if (isset($_POST)) {	
 	$sql = "select id,username,fname,lname from users where username='".$conn->remqt($_POST["username"])."' and binary password='".$conn->remqt($_POST["pass"])."'";
-	
 	$result = $conn->query($sql);
 	unset($_POST);
 	if ($result->num_rows > 0) {
@@ -18,8 +15,11 @@ if (isset($_POST)) {
 		$result = null;	
 		Common::redirect("main.php");
 	}	
-	else 
+	else {
+
 		Common::redirect("login.php?error=Y");
+	}
+
 
 	if (!empty($_GET))
 		if ($_GET["success"] == "Y") 

@@ -38,7 +38,7 @@ if (isset($_SESSION["username"])) {
 		font-family:Calibri;
 	}
 	#logonpanel {
-		width:325px;
+		width:300px;
 		//height:157px;
 		background: #F2F2FA;
 		border-left: 1px solid #000000;
@@ -94,7 +94,6 @@ if (isset($_SESSION["username"])) {
 		<div class="inputs">
 			<button type="submit">Log In</button>&nbsp;&nbsp;<a style="font-size: 12px" href="#" onClick="displayRegPanel()" >New Member?</a>
 		</div>
-
 	</form>
 </div>
 <div id="validate"><?= $msg ?></div>
