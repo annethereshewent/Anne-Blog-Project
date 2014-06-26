@@ -57,7 +57,6 @@ function usernameExists(username) {
 				$("#pass-alert").fadeIn(300).show();
 				return false;
 			}
-			alert(data);
 			$("#register").submit();
 		}
 	});

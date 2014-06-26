@@ -8,7 +8,7 @@ if (isset($_POST)) {
 		"'".$conn->remqt($_POST["pass1"])."')";
 	//echo ($sql);
 	if ($conn->query($sql)) {
-		$sql = "select id from users where username = '".remqt($_POST["email"])."'";
+		$sql = "select id from users where username = '".$conn->remqt($_POST["email"])."'";
 		echo ($sql);
 		$result = $conn->query($sql);
 		$row = $result->fetch_array();
