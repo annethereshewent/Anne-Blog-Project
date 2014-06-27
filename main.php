@@ -63,8 +63,8 @@ else
 </head>
 <body>
 	<h1 class="logo">not tumblr.</h1>
-	<h2 style="text-align:center">Welcome!</h2>
 	<div class="main">
+	<h2 style="text-align:center">Welcome!</h2>
 		<div class="tab-container">
 			<span class="tab"><a class="tlink" href="main.php">Main</a></span>
 			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>

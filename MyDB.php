@@ -17,7 +17,7 @@ class MyDB {
 
 		if ($pID == "")
 			echo "false";
-		$sql = "select post from posts where id=".$pID;
+		$sql = "select post from posts where id=".$this->remqt($pID);
 		$result = $this->mysqli->query($sql);
 		if ($result->num_rows > 0) {
 			$row = $result->fetch_array();
@@ -25,6 +25,15 @@ class MyDB {
 		}
 		$result->close();
 		$result = null;
+	}
+	public function insert_comment($parentID,$pID) {
+		$sql = "insert into comments (comment, postID, userID, parent) values (".
+		"'".$this->remqt($_POST["comment"])."',".
+		$this->remqt($pID).",".
+		$this->remqt($_SESSION["userid"]).",".
+		$this->remqt($parentID).")";
+
+		return $this->mysqli->query($sql);
 	}
 	/*
 	when you absolutely must call mysqli_query
@@ -53,7 +62,7 @@ class MyDB {
 	public function fetch_all_user_posts($userID) {
 		$sql = "select id, post, created_on, edited_on, edited 
 				from posts 
-				where userID='".$userID."' order by id desc";
+				where userID='".$this->remqt($userID)."' order by id desc";
 
 		return $this->mysqli->query($sql);
 	}
@@ -86,7 +95,7 @@ class MyDB {
 		return $this->mysqli->error;
 	}
 	public function fetch_post_comments($postID) {
-		$sql = "select id, comment, parent, created_on 
+		$sql = "select id, comment, parent, created_on, postID 
 				from comments 
 				where postID=".$this->remqt($postID).
 				" order by parent, id";
@@ -97,7 +106,7 @@ class MyDB {
 		}
 		$comments = array(array());
 		while ($row = $result->fetch_assoc())
-			$comments[ $row["parent"] ][ $row["id"] ] = new Comment($row);
+			$comments[ $row["parent"] ][] = new Comment($row);
 		return $comments;
 
 	}

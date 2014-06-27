@@ -20,12 +20,14 @@ else
 	<style>
 	.content.comment-container {
 		width: 800px;
-		height:160px;
+		height:100px;
 		margin-left:-60px;
+	}
+	.comment-container {
 		display:none;
 	}
-	#comment-text {
-		width:740px;
+	.comment-text {
+		width:90%;
 		height:100px;
 		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
@@ -40,12 +42,12 @@ else
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$("#comment-submit").attr("disabled","true");
-		$("#comment-text").blur(function() {
+		$(".comment-submit").attr("disabled","true");
+		jQuery('.comment-text').on('input propertychange paste', function()  {
 			if ($(this).val() != "")
-				$("#comment-submit").removeAttr("disabled");
+				$(".comment-submit").removeAttr("disabled");
 			else
-				$("#comment-submit").attr("disabled","true");
+				$(".comment-submit").attr("disabled","true");
 		});
 	});
 	</script>
@@ -66,16 +68,16 @@ else
 				<p><?= $post["post"]?></p>
 			</div>
 			<div class="post-buttons" style="font-size:12px">
-				<a href="#" onClick="$('#textbox-container').fadeIn(300).show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
+				<a href="#" onClick="$('#new-textbox-container').fadeIn(300).show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
 			</div>
 		</div>
 		<div class="content-divider"></div>
-		<div class="content comment-container" id="textbox-container">
+		<div class="content comment-container" id="new-textbox-container">
 			<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
-				<textarea name="comment" id="comment-text" placeholder="Enter comment here..."></textarea>
+				<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
 				<input type="hidden" name="pid" value="<?= $postID ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" id="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#textbox-container').fadeOut(300).hide()">Cancel</button>
+					<button type="submit" class="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').fadeOut(300).hide()">Cancel</button>
 				</div>
 			</form>
 		</div>

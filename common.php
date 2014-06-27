@@ -1,11 +1,13 @@
 <?php 
-include "config.php";
+include "../config.php";
 function __autoload($class_name) {
     include $class_name . '.php';
 }
 
 session_start();
-$conn = new MyDB($config["HOST"], $config["USERNAME"],$config["PASSWORD"],$config["DB"]);
+	
+$conn = new MyDB($config["HOST"], $config["USERNAME"],$config["PASSWORD"],$config["DB"]) or die("Error connecting: ".$conn->error());
+
 
 class Common {
 	//parsing, useful javascript functions, general utility

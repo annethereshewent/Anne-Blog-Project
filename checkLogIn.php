@@ -2,9 +2,9 @@
 include "common.php";
 
 if (isset($_POST)) {	
-	$sql = "select id,username,fname,lname from users where username='".$conn->remqt($_POST["username"])."' and binary password='".$conn->remqt($_POST["pass"])."'";
+	$sql = "select id,username from users where username='".$conn->remqt($_POST["username"])."' and binary password='".$conn->remqt($_POST["pass"])."'";
 	$result = $conn->query($sql);
-	unset($_POST);
+
 	if ($result->num_rows > 0) {
 		$row = $result->fetch_array();
 		//start a new session and store the username in it
@@ -16,7 +16,8 @@ if (isset($_POST)) {
 		Common::redirect("main.php");
 	}	
 	else {
-
+		echo "ok wtf";
+		exit;
 		Common::redirect("login.php?error=Y");
 	}
 
