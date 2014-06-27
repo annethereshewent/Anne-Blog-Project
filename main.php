@@ -9,7 +9,7 @@ $noRows = false;
 
 if (isset($_SESSION["userid"])) {
 	//get posts
-	$pageNumber = null;
+	$pageNumber = 1;
 	if (isset($_GET["page"])) 
 		$pageNumber = $_GET["page"];
 	
@@ -66,7 +66,7 @@ else
 	<h2 style="text-align:center">Welcome!</h2>
 	<div class="main">
 		<div class="tab-container">
-			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
+			<span class="tab"><a class="tlink" href="main.php">Main</a></span>
 			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
 			<span class="tab">Profile</span>
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
@@ -99,14 +99,10 @@ else
 				}
 			}
 		?>
+		<footer>
+		<?= Common::getPageFooter($pageNumber) ?>
+		</footer>
 	</div>
-		<br>
-	</div>
-	
-	<div class="messages" style="color:red"> 
-		<?= $messages ?>
-	</div>
-
 </body>
 
 <div class="content" id="postModal" style="display:none">

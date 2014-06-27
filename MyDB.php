@@ -39,7 +39,10 @@ class MyDB {
 
 		if ($pID == "")
 			return null;
-		$sql = "select id, post, created_on, edited_on, edited from posts where id = ".$this->remqt($pID);
+		$sql = "select id, post, created_on, edited_on, edited 
+				from posts 
+				where id = ".$this->remqt($pID);
+
 		$result = $this->mysqli->query($sql);
 		if ($result->num_rows == 1) {
 			//success
@@ -48,13 +51,25 @@ class MyDB {
 		return null;
 	}
 	public function fetch_all_user_posts($userID) {
-		$sql = "select id, post, created_on, edited_on, edited from posts where userID='".$userID."' order by id desc";
+		$sql = "select id, post, created_on, edited_on, edited 
+				from posts 
+				where userID='".$userID."' order by id desc";
+
 		return $this->mysqli->query($sql);
+	}
+	public static function getDisplayName($id) {
+		$sql = "select displayname 
+				from users 
+				where id=".$id;
+		$result = self::$mysqli->query($sql);
+		if ($result->num_row == 1)
+			return $result->fetch_array()["displayname"];
+		return "<b>Error</b>: ".$mysqli->error;
 	}
 	public function fetch_user_posts_by_page($userID,$page) {
 		$limit = "";
 
-		if ($page == null || $page == 1) 
+		if ($page == 1) 
 			$limit = "limit 15";
 		else 
 			$limit = "limit ".(15*($page-1)).",15";
@@ -71,7 +86,9 @@ class MyDB {
 		return $this->mysqli->error;
 	}
 	public function fetch_post_comments($postID) {
-		$sql = "select id, comment ,parent, created_on from comments where postID=".$this->remqt($postID).
+		$sql = "select id, comment, parent, created_on 
+				from comments 
+				where postID=".$this->remqt($postID).
 				" order by parent, id";
 		$result = $this->mysqli->query($sql);
 		if (!$result) {

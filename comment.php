@@ -1,6 +1,5 @@
 <? 
-
-class Comment {
+class Comment extends MyDB {
 	
 	public $id,$comment,$created_on,$parent;
 	private $comments=array();
@@ -12,18 +11,21 @@ class Comment {
 		$this->parent     = $row["parent"];
 	}
 	public function __toString() {
+		//maybe implement user pictures at some point
+
+		//MyDB::getUsernameByID($this->userID);
 		return
-		'<div class="content comment-container" style="display:block;">
-		<p style="font-size:small;"><i>Creation Date:</i>: '.$this->created_on.
-		'<div class="post"><p>'.
-		$this->comment.'</p<</div>
+		'<div class="comment">
+			<p style="font-size:small;"><i>Creation Date:</i>: '.$this->created_on.'
+			<div class="post">
+				<p>'.$this->comment.'</p>
+			</div>
+			<p><a href="newChildComment.php?parent='.$this->id.'">Make a Reply</a>
 		</div>
 		<div class="content-divider"></div>';
 	}
-	public function addComment($comment) {
-		
-	}
-		/*recursive function*/
+
+	/*recursive function*/
 	public static function buildCommentTree($commentArray,$root) {
 		if (!isset($commentArray[$root])) {
 			return;	
@@ -34,6 +36,7 @@ class Comment {
 				 '<div style="margin-left:10px;">';
 			echo Comment::buildCommentTree($commentArray,$comment->id);
 			echo '</div>';
+
 		}	
 	}
 

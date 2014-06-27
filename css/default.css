@@ -49,6 +49,10 @@
 		border-radius: 5px;
 		display:block;
 	}
+	.pageFooter {
+		width:450px;
+		text-align:center;
+	}
 	.control-text.lg {
 		width:130px;
 	}

@@ -1,6 +1,7 @@
 <?
 include "common.php";
 
+
 if (isset($_GET["pid"]) && $_GET["pid"] != "") {
 	$postID = $_GET["pid"];
 	$post = $conn->fetch_post($postID);
@@ -23,7 +24,7 @@ else
 		margin-left:-60px;
 		display:none;
 	}
-	#comment {
+	#comment-text {
 		width:740px;
 		height:100px;
 		-webkit-border-radius: 10px;
@@ -40,7 +41,7 @@ else
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("#comment-submit").attr("disabled","true");
-		$("#comment").blur(function() {
+		$("#comment-text").blur(function() {
 			if ($(this).val() != "")
 				$("#comment-submit").removeAttr("disabled");
 			else
@@ -71,14 +72,16 @@ else
 		<div class="content-divider"></div>
 		<div class="content comment-container" id="textbox-container">
 			<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
-				<textarea name="comment" id="comment" placeholder="Enter comment here..."></textarea>
+				<textarea name="comment" id="comment-text" placeholder="Enter comment here..."></textarea>
 				<input type="hidden" name="pid" value="<?= $postID ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" id="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#comment-textbox-container').fadeOut(300).hide()">Cancel</button>
+					<button type="submit" id="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#textbox-container').fadeOut(300).hide()">Cancel</button>
 				</div>
 			</form>
 		</div>
 		<div class="content-divider"></div>
-		<? Comment::buildCommentTree($commentArray,0); ?>
+		<div class="content">
+			<?= Comment::buildCommentTree($commentArray,0) ?>
+		</div>
 </body>
 </html>
