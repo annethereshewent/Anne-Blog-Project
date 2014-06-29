@@ -26,14 +26,25 @@ class MyDB {
 		$result->close();
 		$result = null;
 	}
-	public function insert_comment($parentID,$pID) {
-		$sql = "insert into comments (comment, postID, userID, parent) values (".
-		"'".$this->remqt($_POST["comment"])."',".
-		$this->remqt($pID).",".
-		$this->remqt($_SESSION["userid"]).",".
-		$this->remqt($parentID).")";
+	public function insert_comment($parentID,$pID,$comment) {
+		$sql = "start transaction;
 
-		return $this->mysqli->query($sql);
+				insert into comments 
+				(comment, postID, userID, parent) 
+				values (".
+				"'".$this->remqt($comment)."',".
+				$this->remqt($pID).",".
+				$this->remqt($_SESSION["userid"]).",".
+				$this->remqt($parentID).");
+				
+				update posts  
+				set num_comments = num_comments+1
+				where id=".$pID.";
+
+				commit;";
+				
+
+		return $this->mysqli->multi_query($sql);
 	}
 	/*
 	when you absolutely must call mysqli_query
@@ -60,7 +71,7 @@ class MyDB {
 		return null;
 	}
 	public function fetch_all_user_posts($userID) {
-		$sql = "select id, post, created_on, edited_on, edited 
+		$sql = "select id, post, created_on, edited_on, edited, num_comments 
 				from posts 
 				where userID='".$this->remqt($userID)."' order by id desc";
 
@@ -85,7 +96,7 @@ class MyDB {
 
 
 		$sql = 
-		"select id, post, created_on, edited_on, edited 
+		"select id, post, created_on, edited_on, edited, num_comments 
 		from posts 
 		where userID='".$userID."'
 		order by id desc ".$limit;

@@ -5,7 +5,7 @@ include "common.php";
 $row = null;
 $messages = "";
 $result = null;
-$noRows = false;
+$num_rows = 0;
 
 if (isset($_SESSION["userid"])) {
 	//get posts
@@ -15,8 +15,8 @@ if (isset($_SESSION["userid"])) {
 	
 
 	$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
-	if ($result->num_rows == 0)
-		$noRows= true;
+	$num_rows = $result->num_rows;
+
 }
 else
 	Common::redirect("login.php?error=Y");
@@ -73,7 +73,7 @@ else
 		</div>
 
 			<? if ($result != null) {
-				if ($noRows) { ?>
+				if (!$num_rows) { ?>
 					<div class="content" style="color:grey">
 						<i><h3>Your blog is empty. :(</h3>
 						<p>give your blog some loving and create your first post! We are so excited!</p></i>
@@ -90,7 +90,7 @@ else
 								<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
 							<? }?>
 							<div class="post-buttons" style="font-size:12px">
-								<a href="comments.php?pid=<?= $row["id"] ?>">Make a Comment</a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+								<a href="comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Make a Comment" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
 							</div>
 						</div>
 						<div class="content-divider"></div>
@@ -98,9 +98,10 @@ else
 					}
 				}
 			}
+
 		?>
 		<footer>
-		<?= Common::getPageFooter($pageNumber) ?>
+		<?= $num_rows < 15 ? "" : Common::getPageFooter($pageNumber)  ?>
 		</footer>
 	</div>
 </body>

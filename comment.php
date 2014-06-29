@@ -21,14 +21,14 @@ class Comment {
 			<div class="post">
 				<p>'.$this->comment.'</p>
 			</div>
-			<p><a href="#" onClick="$('.$replySelector.').fadeIn(300).show();return false;">Make a Reply</a></p>
+			<p style="font-size:small"><a href="#" onClick="$('.$replySelector.').show();return false;">Make a Reply</a></p>
 		</div> 
 		<div class="comment-container" id="'.$replytextboxID.'">
 			<hr>
 			<form method="post" action="comment_reply.php?parent='.$this->id.'&pid='.$this->postID.'">
 				<textarea class="comment-text" name="comment" id="comment_reply" placeholder="Enter comment here..."></textarea>
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" class="comment-submit">Reply</button>&nbsp;&nbsp;&nbsp;<button type="button" onClick="$('.$replySelector.').fadeOut(300).hide();return false;">Cancel</button>
+					<button type="submit" class="comment-submit">Reply</button>&nbsp;&nbsp;&nbsp;<button type="button" onClick="$('.$replySelector.').hide();return false;">Cancel</button>
 				</div>
 			</form>
 			<hr>
@@ -38,14 +38,14 @@ class Comment {
 	}
 
 	/*recursive function*/
-	public static function buildCommentTree($commentArray,$root) {
-		if (!isset($commentArray[$root])) {
+	public static function printCommentTree($commentTree,$root) {
+		if (!isset($commentTree[$root])) {
 			return;	
 		}
-		foreach ($commentArray[$root] as $comment) {
+		foreach ($commentTree[$root] as $comment) {
 			echo '<p>'.$comment.'</p>'.
-				 '<div style="margin-left:10px;">';
-			echo Comment::buildCommentTree($commentArray,$comment->id);
+				 '<div style="margin-left:15px;">';
+			echo Comment::printCommentTree($commentTree,$comment->id);
 			echo '</div>';
 
 		}	

@@ -7,9 +7,8 @@ if (isset($_GET["pid"]) && $_GET["pid"] != "") {
 	$post = $conn->fetch_post($postID);
 	
 
-	$commentArray = $conn->fetch_post_comments($postID);
+	$commentTree = $conn->fetch_post_comments($postID);
 
-	//$commentTreeStr = Comment::buildCommentTree($commentArray,0);
 
 }
 else
@@ -19,8 +18,8 @@ else
 <head>	
 	<style>
 	.content.comment-container {
-		width: 800px;
-		height:100px;
+		width: 600px;
+		height:150px;
 		margin-left:-60px;
 	}
 	.comment-container {
@@ -56,7 +55,7 @@ else
 	<h1 class="logo">not tumblr.</h1>
 	<div class="main">
 		<div class="tab-container">
-			<span class="tab"><a class="tlink" href="main.php">Posts</a></span>
+			<span class="tab"><a class="tlink" href="main.php">Main</a></span>
 			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
 			<span class="tab">Profile</span>
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
@@ -68,7 +67,7 @@ else
 				<p><?= $post["post"]?></p>
 			</div>
 			<div class="post-buttons" style="font-size:12px">
-				<a href="#" onClick="$('#new-textbox-container').fadeIn(300).show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
+				<a href="#" onClick="$('#new-textbox-container').show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
 			</div>
 		</div>
 		<div class="content-divider"></div>
@@ -77,13 +76,15 @@ else
 				<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
 				<input type="hidden" name="pid" value="<?= $postID ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" class="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').fadeOut(300).hide()">Cancel</button>
+					<button type="submit" class="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()">Cancel</button>
 				</div>
 			</form>
 		</div>
 		<div class="content-divider"></div>
-		<div class="content">
-			<?= Comment::buildCommentTree($commentArray,0) ?>
-		</div>
+		<? if (sizeof($commentTree[0]) != 0) { ?>
+			<div class="content">
+				<?= Comment::printCommentTree($commentTree,0) ?>
+			</div>
+		<? } ?>
 </body>
 </html>
