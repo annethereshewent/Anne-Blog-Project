@@ -47,13 +47,13 @@ class MyDB {
 		return $this->mysqli->multi_query($sql);
 	}
 	/*
-	when you absolutely must call mysqli_query
+	when you must call mysqli_query
 	*/
 	public function query($sql) {
 		return $this->mysqli->query($sql);
 	}
 	/* 
-	fetches a post record from database and returns it. good for formatting and what not
+	fetches a post record from database and returns it. good for formatting
 	*/
 	public function fetch_post($pID) {
 
@@ -77,23 +77,8 @@ class MyDB {
 
 		return $this->mysqli->query($sql);
 	}
-	public static function getDisplayName($id) {
-		$sql = "select displayname 
-				from users 
-				where id=".$id;
-		$result = self::$mysqli->query($sql);
-		if ($result->num_row == 1)
-			return $result->fetch_array()["displayname"];
-		return "<b>Error</b>: ".$mysqli->error;
-	}
 	public function fetch_user_posts_by_page($userID,$page) {
-		$limit = "";
-
-		if ($page == 1) 
-			$limit = "limit 15";
-		else 
-			$limit = "limit ".(15*($page-1)).",15";
-
+		$limit = $page == 1 ? "limit 15" : "limit ".(15*($page-1)).",15";
 
 		$sql = 
 		"select id, post, created_on, edited_on, edited, num_comments 
@@ -106,9 +91,10 @@ class MyDB {
 		return $this->mysqli->error;
 	}
 	public function fetch_post_comments($postID) {
-		$sql = "select id, comment, parent, created_on, postID 
-				from comments 
+		$sql = "select c.id, comment, parent, created_on, postID, displayname 
+				from  comments c, users u
 				where postID=".$this->remqt($postID).
+				" and u.id = c.userID".
 				" order by parent, id";
 		$result = $this->mysqli->query($sql);
 		if (!$result) {

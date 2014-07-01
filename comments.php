@@ -36,6 +36,20 @@ else
 		outline:none;
 		resize:none;
 	}
+	.comment-col {
+		display:table-cell;
+	}
+	.comment-row {
+		display:table-row;
+	}
+	.comment-header {
+		margin-right:10px;
+		font-size:small;
+
+	}
+	.comment {
+		width:auto;
+	}
 	</style>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	

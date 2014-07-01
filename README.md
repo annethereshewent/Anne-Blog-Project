@@ -1,7 +1,6 @@
 Blog-Site
 =========
 
-My blog site that is totally not based on tumblr's design
+My PHP blog project
 
-I'm fairly new to web programming and design, I'm trying to learn php on my own by making a very simple blog site and adding functionality as I keep thinking up things.
-I'm not sure this is a good idea but we'll see
+I'm fairly new to PHP as a language, so I made a simple blog page to get an idea of the fundamentals and how the language works. Made this without a framework, created my own classes and utilities for fetching data from the database as well as a few general output and formatting functions. All CSS written by me, as well as some of the javascript with the exception of a few jQuery plug-ins. 

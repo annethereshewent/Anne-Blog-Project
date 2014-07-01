@@ -1,7 +1,7 @@
 <? 
 class Comment {
 	
-	public $id,$comment,$created_on,$parent,$postID;
+	public $id,$comment,$created_on,$parent,$postID,$username;
 	private $comments=array();
 	//constructor
 	public function __construct($row) {
@@ -10,19 +10,25 @@ class Comment {
 		$this->created_on = $row["created_on"];
 		$this->parent     = $row["parent"];
 		$this->postID     = $row["postID"];
+		$this->username  = $row["displayname"];
 	}
 	public function __toString() {
 		//maybe implement user pictures at some point
 		$replytextboxID = "reply-textbox-".$this->id;
 		$replySelector = "'#".$replytextboxID."'";
 		return
-		'<div class="comment">
-			<p style="font-size:small;"><i>Posted on:</i> '.$this->created_on.'</p>
+
+		'
+		<div class="comment"> 
+			<div  style="font-size:small;">	
+			<img src="images/user_icon.png" length="30" width="30">
+			<b>'.$this->username.'</b>
+			<i>Posted on:</i> '.$this->created_on.'</p>
 			<div class="post">
 				<p>'.$this->comment.'</p>
 			</div>
 			<p style="font-size:small"><a href="#" onClick="$('.$replySelector.').show();return false;">Make a Reply</a></p>
-		</div> 
+		</div>
 		<div class="comment-container" id="'.$replytextboxID.'">
 			<hr>
 			<form method="post" action="comment_reply.php?parent='.$this->id.'&pid='.$this->postID.'">

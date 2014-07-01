@@ -39,7 +39,6 @@ else
 
 	
 	<style>
-
 	#postModal {
 		width: 375px;
 		height: 420px;
@@ -101,7 +100,7 @@ else
 
 		?>
 		<footer>
-		<?= $num_rows < 15 ? "" : Common::getPageFooter($pageNumber)  ?>
+			<?= $num_rows < 15 ? "" : Common::getPageFooter($pageNumber)  ?>
 		</footer>
 	</div>
 </body>
