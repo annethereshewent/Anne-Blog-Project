@@ -47,9 +47,12 @@ else
 		font-size:small;
 
 	}
-	.comment {
-		width:auto;
+	#comments-box {
+		word-wrap:break-word;
+		width:500px;
+		margin-left:-20px;
 	}
+
 	</style>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
@@ -96,7 +99,7 @@ else
 		</div>
 		<div class="content-divider"></div>
 		<? if (sizeof($commentTree[0]) != 0) { ?>
-			<div class="content">
+			<div class="content" id="comments-box">
 				<?= Comment::printCommentTree($commentTree,0) ?>
 			</div>
 		<? } ?>

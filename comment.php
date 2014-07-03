@@ -21,9 +21,10 @@ class Comment {
 		'
 		<div class="comment"> 
 			<div  style="font-size:small;">	
-			<img src="images/user_icon.png" length="30" width="30">
-			<b>'.$this->username.'</b>
-			<i>Posted on:</i> '.$this->created_on.'</p>
+				<img src="images/user_icon.png" length="30" width="30">
+				<b>'.$this->username.'</b>
+				<i>Posted on:</i> '.$this->created_on.'
+			</div>
 			<div class="post">
 				<p>'.$this->comment.'</p>
 			</div>
