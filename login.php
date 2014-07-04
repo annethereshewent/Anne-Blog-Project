@@ -2,7 +2,6 @@
 include "common.php";
 $msg = "";
 
-
 if (!empty($_GET)) {
 	if (isset($_GET["error"])) 	
 		$msg = "<p class=\"error\">Imposter detected! Red alert! weeooowweeeeowoeeooo</p>";
