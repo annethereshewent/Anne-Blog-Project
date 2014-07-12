@@ -41,25 +41,23 @@ class MyDB {
 	public function register_user($record) {
 		$sql = "insert into users (username, password) 
 				values (:user, :pass)";
-		
 
-	if ($conn->query($sql)) {
-		$sql = "select id from users where username = '".$conn->remqt($_POST["email"])."'";
-		echo ($sql);
-		$result = $conn->query($sql);
-		$row = $result->fetch_array();
-		$_SESSION["username"] = $conn->remqt($_POST["email"]);
-		$_SESSION["userid"] = $row["id"];
-		Common::redirect("main.php");
-	}
-	else {
-		echo "<b>MySQL error:</b> ".$conn->error();
-	}
-
-}
-else {
-	Common::redirect("login.php?regError=Y");
-}
+		$stmt = $this->prepare($sql, array(
+			"user" => $record["email"],
+			"pass" => $record["pass1"]
+		));
+		if ($conn->query($sql)) {
+			$sql = "select id from users where username = '".$conn->remqt($_POST["email"])."'";
+			echo ($sql);
+			$result = $conn->query($sql);
+			$row = $result->fetch_array();
+			$_SESSION["username"] = $conn->remqt($_POST["email"]);
+			$_SESSION["userid"] = $row["id"];
+			Common::redirect("main.php");
+		}
+		else {
+			echo "<b>MySQL error:</b> ".$conn->error();
+		}
 	}
 
 	public function authenticate($username,$password) {
@@ -74,7 +72,7 @@ else {
 			"pass" => $password
 		));
 		$stmt->setFetchMode(PDO::FETCH_ASSOC);
-		while ($row = $stmt->fetch()) {
+		if ($row = $stmt->fetch()) {
 			//if it got here authentication is successful
 			echo "authentication successful, logging in...<br>";
 			$_SESSION["userid"] = $row["id"];
