@@ -9,7 +9,7 @@ class MyDB {
 		try {
 			$this->DB = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pass);
 			$this->DB->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
-			$this->DB->etAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
 			echo $e->getMessage();
 			exit;
@@ -97,7 +97,7 @@ class MyDB {
 			$stmt->execute($data);
 			return $stmt;
 		} catch (Exception $e) {
-			var_dump($e->getMessage();
+			var_dump($e->getMessage());
 		}
 	}
 	public function check_username($username) {
