@@ -25,10 +25,10 @@
 		-moz-border-radius: 20px;
 		border-radius: 20px;
 		//margin: 30px 30px 30px 30px;
-		padding-left: 20px;
+		padding-left: 30px;
 		padding-bottom:20px;
 		padding-right:20px;
-		width: 400px;
+		width: 350px;
 	}
 	.tab-container {
 		margin-left:20px;
@@ -62,6 +62,9 @@
 		color: white;
 		font-family:"Bookman Old Style";
 		font-size:42px;
+	}
+	.logo-bracket {
+		color:#6B24B2;
 	}
 	.control-label {
 		display:block;

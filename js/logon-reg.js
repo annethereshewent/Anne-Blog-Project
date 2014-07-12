@@ -22,12 +22,8 @@ function validate() {
 		check = false;
 	}
 	if ($("#pass1").val().length < 8) {
-		$("#pass1").next().show();
-		check = false;
-	}
-	if ($("#pass2").val() < 8) {
 		$("#pass2").next().show();
-		check  = false;
+		check = false;
 	}
 	if (check) {
 		if ($("#pass1").val() == $("#pass2").val()) {
@@ -49,7 +45,7 @@ function usernameExists(username) {
 		type: "GET",
 		url: "check_username.php?user=" + username,
 		success: function(data) {
-			if (data == "true") {
+			if (data == 1) {
 				var user_warning = $("#email").next();
 				$(user_warning).html("<i>e-mail is already in use.</i>");
 				$(user_warning).show();

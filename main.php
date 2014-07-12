@@ -1,4 +1,4 @@
-<?
+<?php
 include "common.php";
 
 
@@ -15,7 +15,7 @@ if (isset($_SESSION["userid"])) {
 	
 
 	$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
-	$num_rows = $result->num_rows;
+	$num_rows = $result->rowCount();
 
 }
 else
@@ -61,7 +61,7 @@ else
 	</style>
 </head>
 <body>
-	<h1 class="logo">not tumblr.</h1>
+	<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
 	<div class="main">
 	<h2 style="text-align:center">Welcome!</h2>
 		<div class="tab-container">
@@ -71,36 +71,36 @@ else
 			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
 		</div>
 
-			<? if ($result != null) {
+			<?php if ($result != null) {
 				if (!$num_rows) { ?>
 					<div class="content" style="color:grey">
 						<i><h3>Your blog is empty. :(</h3>
 						<p>give your blog some loving and create your first post! We are so excited!</p></i>
 					</div>
-				<? } 
+				<?php } 
 				else {
-					while ($row = mysqli_fetch_array($result)) { ?>
+					while ($row = $result->fetch()) { ?>
 						<div class="content">
 							<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
 							<div class="post"> 
 								<p><?= $row["post"]?></p>
 							</div>
-							<? if ($row["edited"] == 1) { ?>
+							<?php if ($row["edited"] == 1) { ?>
 								<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
-							<? }?>
+							<?php }?>
 							<div class="post-buttons" style="font-size:12px">
 								<a href="comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Make a Comment" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
 							</div>
 						</div>
 						<div class="content-divider"></div>
-		<?
+		<?php
 					}
 				}
 			}
 
 		?>
 		<footer>
-			<?= $num_rows < 15 ? "" : Common::getPageFooter($pageNumber)  ?>
+			<?= Common::getPageFooter($pageNumber,$num_rows)  ?>
 		</footer>
 	</div>
 </body>

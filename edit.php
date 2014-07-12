@@ -1,4 +1,4 @@
-<?
+<?php
 include "common.php";
 
 if (isset($_GET["pID"]) && isset($_POST["htmlContent"])) {

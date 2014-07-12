@@ -1,4 +1,4 @@
-<? 
+<?php 
 include "common.php";
 $msg = "";
 
@@ -13,7 +13,7 @@ if (isset($_SESSION["username"])) {
 ?>
 
 <head>
-	<title>The best blog in the whole wide world!</title>
+	<title>Blogger</title>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/logon-reg.js" type="text/javascript"></script>
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -44,7 +44,7 @@ if (isset($_SESSION["username"])) {
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
 		border-bottom: 1px solid #000000;
-		margin: 200px 200px 200px 350px;
+		margin: 200px 0px 0px 350px;
 		font-family: Calibri;
 		font-size: 16px;
 	}
@@ -64,7 +64,7 @@ if (isset($_SESSION["username"])) {
 		text-align:center;
 	}
 	#registerpanel {
-		margin: 140px 200px 200px 200px;
+		margin: 200px 0px 0px 350px;
 		font-size: 12px;
 		display:none;
 		width:275px;
@@ -78,8 +78,8 @@ if (isset($_SESSION["username"])) {
 	
 </head>
 <body>
-	<h1 class="logo">not tumblr.</h1>
-	<p class="error" style="text-align:center"><?= $msg ?>
+<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
+<p class="error" style="text-align:center"><?= $msg ?>
 <div id="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">
@@ -97,7 +97,7 @@ if (isset($_SESSION["username"])) {
 	</form>
 </div>
 <div id="validate"><?= $msg ?></div>
-<div class="content" id="registerpanel" style="">
+<div class="content" id="registerpanel">
 	<p><i>Please fill in the required fields.</i></p>
 	<div>
 		<form name="register" id="register" method="post" action="checkRegister.php">
@@ -105,12 +105,12 @@ if (isset($_SESSION["username"])) {
 				<label class="control-label">Please Enter E-mail:</label>
 				<input type="text" name="email" class="control-text lg" id="email"><span class="error"><i>(Required)</i></span>
 			</div>
-			<div class="inputs" style="padding-bottom:10px">
+			<div class="inputs" style="margin-bottom:10px">
 				<label class="control-label "><i>(This will be used as your log in.)</i></label>
 			</div>
 			<div class="inputs">
 				<label class="control-label">Please Enter Password:</label>
-				<input class="control-text lg" type="password" name="pass1" id="pass1"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
+				<input class="control-text lg" type="password" name="pass1" id="pass1">
 			</div>
 			<div class="inputs" style="margin-bottom:20px">
 				<label class="control-label">Please Re-enter Password:</label>

@@ -1,4 +1,4 @@
-<? 
+<?php 
 class Comment {
 	
 	public $id,$comment,$created_on,$parent,$postID,$username;
@@ -21,7 +21,7 @@ class Comment {
 		'
 		<div class="comment"> 
 			<div  style="font-size:small;">	
-				<img src="images/user_icon.png" length="30" width="30">
+				<img src="images/user_icon.png">
 				<b>'.$this->username.'</b>
 				<i>Posted on:</i> '.$this->created_on.'
 			</div>

@@ -1,4 +1,4 @@
-<?
+<?php
 include "common.php";
 
 
@@ -69,7 +69,7 @@ else
 	</script>
 </head>
 <body>
-	<h1 class="logo">not tumblr.</h1>
+	<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
 	<div class="main">
 		<div class="tab-container">
 			<span class="tab"><a class="tlink" href="main.php">Main</a></span>

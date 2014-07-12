@@ -3,10 +3,13 @@ include "common.php";
 
 
 if (isset($_POST)) {
+	$conn->register_user(array(
+		"email" => $_POST["email"], 
+		"password" => $_POST["pass1"]
+	));
 	$sql = "insert into users (username, password) values (".
 		"'".$conn->remqt($_POST["email"])."',".
 		"'".$conn->remqt($_POST["pass1"])."')";
-	//echo ($sql);
 	if ($conn->query($sql)) {
 		$sql = "select id from users where username = '".$conn->remqt($_POST["email"])."'";
 		echo ($sql);
