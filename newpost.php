@@ -5,17 +5,10 @@ if (!isset($_SESSION))
 	jsRedirect("login.php?error=Y");
 if (isset($_POST["htmlContent"])) {
 
-	$sql = "insert into posts (post,userID) values ('".
-		$conn->remqt($_POST["htmlContent"])."',"
-		.$_SESSION["userid"].")";
-
-	if ($conn->query($sql)) 
+	if ($conn->insert_post($_POST["htmlContent"], $_SESSION["userid"])) 
 		Common::redirect("main.php?success=Y");
-	else {
-		echo("<p style=\"color:red\">Error: ".$conn->error);
-		echo $sql;
-		exit;
-	}
+	else 
+		Common::redirect("main.phpsuccess=N");	
 }
 else {
 	echo "something went wrong";

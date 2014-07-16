@@ -3,12 +3,12 @@
 class MyDB {
 
 	private $DB; 
-
+	//note to self: if PDO::rowCount() doesn't work on the server, try select found_rows(); instead
 
 	public function __construct($host, $user, $pass,$db) {
 		try {
 			$this->DB = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pass);
-			$this->DB->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+			$this->DB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			$this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
 			echo $e->getMessage();
@@ -24,82 +24,125 @@ class MyDB {
 			echo "false";
 		$sql = "select post 
 				from posts 
-				where id=?";
+				where id=:id";
 		
-		$stmt = $this->prepare($sql,array("i",intval($pID)));
+		$stmt = $this->prepare($sql,array(
+			"id" => $pID
+		));
 
 
-		if ($result->num_rows > 0) {
-			$row = $result->fetch_array();
+		if ($stmt->rowCount() > 0) {
+			$row = $stmt->fetch();
 			echo $row["post"];
 		}
-		$result->close();
-		$statement->close();
-		$result = null;
 		$statement = null;
 
+	}
+
+	public function edit_post($content, $pID) {
+			$sql = "update posts set post = :content,
+			edited_on = CURRENT_TIMESTAMP,
+			edited = 1
+			where id= :pID";
+
+			return $this->command($sql,array(
+				"content" => $content,
+				"pID"     => $pID
+			));
 	}
 
 	public function register_user($record) {
 		$sql = "insert into users (username, password) 
 				values (:user, :pass)";
+		
+		//generate random salt, cost of 7
+		//$salt = '$2a$07$'.base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)); 
+		//$hash = crypt($record["password"], $salt);
 
-		$stmt = $this->prepare($sql, array(
+		$hash = password_hash($record["password"], PASSWORD_DEFAULT);
+		//echo $hash;
+		
+		$params = array(
 			"user" => $record["email"],
-			"pass" => $record["pass1"]
-		));
-		if ($conn->query($sql)) {
-			$sql = "select id from users where username = '".$conn->remqt($_POST["email"])."'";
-			echo ($sql);
-			$result = $conn->query($sql);
-			$row = $result->fetch_array();
-			$_SESSION["username"] = $conn->remqt($_POST["email"]);
-			$_SESSION["userid"] = $row["id"];
-			Common::redirect("main.php");
-		}
-		else {
-			echo "<b>MySQL error:</b> ".$conn->error();
+			"pass" => $hash
+		);
+
+		if ($this->command($sql, $params)) {
+			$sql = "select id 
+					from users 
+					where username = :username";
+
+			//echo ($sql);
+			$statement = $this->prepare($sql, array(
+				"username" => $record["email"]
+			));
+			if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+				$_SESSION["username"] = $record["email"];
+				$_SESSION["userid"] = $row["id"];
+				Common::redirect("main.php");
+			}
 		}
 	}
 
 	public function authenticate($username,$password) {
-			
-		$sql = "select id,username 
+		if (!isset($_SESSION["attempts"]))
+			$_SESSION["attempts"] = 0;	
+		$sql = "select id,username,password 
 				from users 
-				where username=:user and binary password=:pass limit 1";
+				where username=:user limit 1";
 		//echo $sql.", username = ".$username." and password=".$password;
 		
 		$stmt = $this->prepare($sql,array(
-			"user" => $username,
-			"pass" => $password
+			"user" => $username
 		));
-		$stmt->setFetchMode(PDO::FETCH_ASSOC);
+
 		if ($row = $stmt->fetch()) {
-			//if it got here authentication is successful
-			echo "authentication successful, logging in...<br>";
-			$_SESSION["userid"] = $row["id"];
-			$_SESSION["username"] = $row["username"];
-			$stmt = null;
-			Common::redirect("main.php");
+			//need to check hashed password
+			if (password_verify($password,$row["password"])) { 
+				echo "authentication successful, logging in...<br>";
+				$_SESSION["userid"] = $row["id"];
+				$_SESSION["username"] = $row["username"];
+				$stmt = null;
+				$_SESSION["attempts"] = null;
+				unset($_SESSION["attempts"]);
+				Common::redirect("main.php");
+			}
 		}
+
 		echo "Authentication failed..";
+		$_SESSION["attempts"]++;
 		Common::redirect("login.php?error=Y");
 
 	}
 
+	/*
+	same as prepare, but returns true or false.
+	used for inserts and updates.
+	*/
+	public function command($sql, $params) {
+		try {
+			$stmt = $this->DB->prepare($sql);
+			if ($stmt->execute($params))
+				return true;
+			return false;
+		} catch (Exception $e) {
+			var_dump($e->getMessage());
+			return false;
+		}
+	}
 
-
-
-
-	public function prepare($sql, $data) {
+	public function prepare($sql, $data) {	
 		try {
 			$stmt = $this->DB->prepare($sql);
 			$stmt->execute($data);
 			return $stmt;
 		} catch (Exception $e) {
 			var_dump($e->getMessage());
+			return null;
 		}
+
 	}
+
 	public function check_username($username) {
 		$sql = "select username 
 				from users 
@@ -117,36 +160,58 @@ class MyDB {
 
 		return false;
 	}
+
+	public function insert_post($content,$userID) {
+		$sql = "insert into posts (post,userID) 
+				values (:content, :userID)";
+		
+		return $this->command($sql, array(
+			"content" => $content,
+			"userID"  => $userID
+		));
+	}
+
 	public function insert_comment($parentID,$pID,$comment) {
-		$sql = "start transaction;
+		$this->DB->beginTransaction();
+		try {
+			$sql = "insert into comments 
+					(comment, postID, userID, parent) 
+					values (:comment, :postID, :userID, :parent)";
+			
+			$stmt = $this->DB->prepare($sql);
+			$stmt->execute(array(
+				"comment" => $comment,
+				"postID"  => $pID,
+				"userID"  => $_SESSION["userid"],
+				"parent"  => $parentID
+			));		
+					
+			$sql = "update posts  
+					set num_comments = num_comments+1
+					where id=:pID";
 
-				insert into comments 
-				(comment, postID, userID, parent) 
-				values (".
-				"'".$this->remqt($comment)."',".
-				$this->remqt($pID).",".
-				$this->remqt($_SESSION["userid"]).",".
-				$this->remqt($parentID).");
-				
-				update posts  
-				set num_comments = num_comments+1
-				where id=".$pID.";
+			$stmt = $this->DB->prepare($sql);
+			$stmt->execute(array(
+				"pID" => $_SESSION["userid"]
+			));
 
-				commit;";
-				
-
-		return $this->mysqli->multi_query($sql);
+			$this->DB->commit();
+		} catch (Exception $e) {
+			echo "hey it made it here! yay.";
+			$this->DB->rollback();
+			var_dump($e->getMessage());
+			return false;
+		}	
+		return true;
 	}
 	/*
-	when you *must* call mysqli_query
-	may phase this one out eventually.
+	when you *must* call a query directly.
 	uses prepared statements
 	*/
 	public function query($sql,$params) {
 		$statement = $this->prepare($sql,$params);
-		$result = $statement->get_result();
-
-		return $result;
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		return $statement;
 	}
 	/* 
 	fetches a post record from database and returns it. good for formatting
@@ -157,17 +222,20 @@ class MyDB {
 			return null;
 		$sql = "select id, post, created_on, edited_on, edited 
 				from posts 
-				where id = ".$this->remqt($pID);
+				where id = :id";
 
-		$result = $this->mysqli->query($sql);
-		if ($result->num_rows == 1) {
+		//$result = $this->mysqli->query($sql);
+		$stmt = $this->prepare($sql,array(
+			"id" => $pID
+		));
+		if ($stmt->rowCount() == 1) {
 			//success
-			return $result->fetch_array();
+			return $stmt->fetch();
 		} 
 		return null;
 	}
 	/*
-	used to get all user posts at once, not really used
+	gets all user posts at once, deprecated
 	*/
 	public function fetch_all_user_posts($userID) {
 		$sql = "select id, post, created_on, edited_on, edited, num_comments 
@@ -198,27 +266,19 @@ class MyDB {
 		return $stmt;
 	}
 
-	public function error() {
-		return $this->mysqli->error;
-	}
-
-
 	public function fetch_post_comments($postID) {
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 
 				from  comments c, users u
-				where postID=".$this->remqt($postID).
-				" and u.id = c.userID".
-				" order by parent, id";
-		$result = $this->mysqli->query($sql);
-		if (!$result) {
-			echo "<b>Runtime error: </b>".$this->error();
-			exit;
-		}
+				where postID=:postID
+				and u.id = c.userID
+				order by parent, id";
+		$stmt = $this->prepare($sql,array(
+			"postID" => $postID
+		));
 		$comments = array(array());
-		while ($row = $result->fetch_assoc())
+		while ($row = $stmt->fetch())
 			$comments[ $row["parent"] ][] = new Comment($row);
 		return $comments;
-
 	}
 }
 ?>

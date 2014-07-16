@@ -2,20 +2,10 @@
 include "common.php";
 
 if (isset($_GET["pID"]) && isset($_POST["htmlContent"])) {
-	$sql = "update posts set post = '".
-			$conn->remqt($_POST["htmlContent"])."',".
-				"edited_on = CURRENT_TIMESTAMP,".
-				"edited = 1".
-				" where id= ".$conn->remqt($_GET["pID"]);
-
-	if ($result = $conn->query($sql)) {
+	if ($conn->edit_post($_POST["htmlContent"], $_GET["pID"]))
 		Common::redirect("main.php?success=Y");
-	}
-	else {
-		printf("Errormessage: %s\n", MyDB::error);
-		exit;
-	}
-	
+	else 
+		Common::redirect("main.php?success=N");	
 }
 else {
 	echo "soemthing's wrong";
