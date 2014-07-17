@@ -192,7 +192,7 @@ class MyDB {
 
 			$stmt = $this->DB->prepare($sql);
 			$stmt->execute(array(
-				"pID" => $_SESSION["userid"]
+				"pID" => $parentID
 			));
 
 			$this->DB->commit();
