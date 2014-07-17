@@ -192,12 +192,11 @@ class MyDB {
 
 			$stmt = $this->DB->prepare($sql);
 			$stmt->execute(array(
-				"pID" => $parentID
+				"pID" => $pID
 			));
 
 			$this->DB->commit();
 		} catch (Exception $e) {
-			echo "hey it made it here! yay.";
 			$this->DB->rollback();
 			var_dump($e->getMessage());
 			return false;
