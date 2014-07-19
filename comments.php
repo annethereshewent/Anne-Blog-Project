@@ -6,7 +6,6 @@ if (isset($_GET["pid"]) && $_GET["pid"] != "") {
 	$postID = $_GET["pid"];
 	$post = $conn->fetch_post($postID);
 	
-
 	$commentTree = $conn->fetch_post_comments($postID);
 
 

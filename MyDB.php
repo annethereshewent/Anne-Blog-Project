@@ -40,10 +40,11 @@ class MyDB {
 	}
 
 	public function edit_post($content, $pID) {
-			$sql = "update posts set post = :content,
-			edited_on = CURRENT_TIMESTAMP,
-			edited = 1
-			where id= :pID";
+			$sql = "update posts 
+					set post = :content,
+					edited_on = CURRENT_TIMESTAMP,
+					edited = 1
+					where id= :pID";
 
 			return $this->command($sql,array(
 				"content" => $content,
@@ -172,6 +173,7 @@ class MyDB {
 	}
 
 	public function insert_comment($parentID,$pID,$comment) {
+		$comment = str_replace("\n", "<br>", $comment);
 		$this->DB->beginTransaction();
 		try {
 			$sql = "insert into comments 

@@ -21,7 +21,7 @@ class Common {
 	}
 	public static function getPageFooter($page,$num_posts) {
 		$returnStr = '<p class="pageFooter">';
-		if ($num_posts == 15) {
+		if ($num_posts > 15) {
 			
 			if ($page == 1) {
 				$returnStr .= '<a href="main.php?page='.($page+1).'">Next Page</a></p>';
