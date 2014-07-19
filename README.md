@@ -1,6 +1,6 @@
 ## My PHP blog project
 
-, so I made a simple blog page to get an idea of the fundamentals and how the language works. I created my own classes and utilities for fetching data from the database as well as a few general output and formatting functions.
+I wanted to learn PHP, so I made a simple blog page to get an idea of the fundamentals and how the language works. I created my own classes and utilities for fetching data from the database as well as a few general output and formatting functions.
 
 This is a pretty standard blog, you can register an account, log in, make posts, make comments.. Used several jQuery plugins such as modals and a wysiwyg editor to make the site more modern and streamlined.
 
