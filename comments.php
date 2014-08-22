@@ -54,29 +54,33 @@ else
 
 	</style>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$(".comment-submit").attr("disabled","true");
-		jQuery('.comment-text').on('input propertychange paste', function()  {
-			if ($(this).val() != "")
-				$(".comment-submit").removeAttr("disabled");
-			else
-				$(".comment-submit").attr("disabled","true");
-		});
-	});
-	</script>
 </head>
 <body>
-	<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
-	<div class="main">
-		<div class="tab-container">
-			<span class="tab"><a class="tlink" href="main.php">Main</a></span>
-			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
-			<span class="tab">Profile</span>
-			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
-		</div>
+<aside class="sidebar">
+    <div class="sidebar-main">
+        <div class="title">
+            <?= $_SESSION["title"] ?>.
+        </div>
+        <div class="img-container">
+            <img class="sidebar-image" src="">
+        </div>
 
+            <div class="description">
+               <?= "(description)" ?>
+            </div>
+
+        <nav class="links">
+            <ul>
+  				<!--make "new" and "account" viewable only to the person logged in -->
+                <li><a href="/main.php">home</a></li>
+                <li><a href="/account.php">account</a></li>
+                <li><a href="contact.php">contact</a></li>
+                <li><a href="logout.php">log out</a></li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+	<div class="main">
 		<div class="content">
 			<p style="font-size:small;"><i>Creation Date: <?= $post["created_on"] ?></i></p>
 			<div class="post"> 
@@ -102,5 +106,17 @@ else
 				<?= Comment::printCommentTree($commentTree,0) ?>
 			</div>
 		<? } ?>
+		<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$(".comment-submit").attr("disabled","true");
+			jQuery('.comment-text').on('input propertychange paste', function()  {
+				if ($(this).val() != "")
+					$(".comment-submit").removeAttr("disabled");
+				else
+					$(".comment-submit").attr("disabled","true");
+			});
+		});
+		</script>
 </body>
 </html>

@@ -67,13 +67,14 @@ if (isset($_SESSION["username"])) {
 		margin: 200px 0px 0px 350px;
 		font-size: 12px;
 		display:none;
-		width:275px;
+		width:300px;
 	}
 	#pass-alert {
 		display:none;
 		font-size:10px;
 		text-align:center;
 	}
+
 	</style>
 	
 </head>
@@ -98,27 +99,41 @@ if (isset($_SESSION["username"])) {
 </div>
 <div id="validate"><?= $msg ?></div>
 <div class="content" id="registerpanel">
-	<p><i>Please fill in the required fields.</i></p>
+	<p style="color:#5200A3"><i>Please fill in the required fields.</i></p>
 	<div>
 		<form name="register" id="register" method="post" action="checkRegister.php">
-			<div class="inputs">
-				<label class="control-label">Please Enter E-mail:</label>
-				<input type="text" name="email" class="control-text lg" id="email"><span class="error"><i>(Required)</i></span>
+			<div class="inputs row">
+				<label class="control-label"><i>
+				<div class="col">
+					<input type="text" name="btitle" id="btitle" class="control-text lg" placeholder="Blog Title (Optional)"><span class="error"></span>
+				</div>
+				<div class="col" style="margin-left:20px">
+					<input type="text" placeholder="Display Name (Optional)" name="displayname" class="control-text lg" id="displayname"><span class="error"></span>
+				</div>
 			</div>
-			<div class="inputs" style="margin-bottom:10px">
-				<label class="control-label "><i>(This will be used as your log in.)</i></label>
+			<div style="margin-bottom:20px"></div>	
+			<div class="inputs">			
+					<input type="text" placeholder="E-mail" name="email" class="control-text" id="email"><span class="error"><i>(Required)</i></span>
+					<label class="control-label"><i>(This will be used as your log-in.)</i></label>
 			</div>
-			<div class="inputs">
-				<label class="control-label">Please Enter Password:</label>
-				<input class="control-text lg" type="password" name="pass1" id="pass1">
+
+			<div style="margin-bottom:20px"></div>
+
+			<div class="inputs row">
+				<div class="col">
+					<input class="control-text lg" type="password" placeholder="Password" name="pass1" id="pass1">
+				</div>
+				<div class="col">
+					<input class="control-text lg" placeholder="Re-enter Password" type="password" name="pass2" id="pass2"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
+				</div>
 			</div>
-			<div class="inputs" style="margin-bottom:20px">
-				<label class="control-label">Please Re-enter Password:</label>
-				<input class="control-text lg" type="password" name="pass2" id="pass2"><span class="error"><i>(Required, must be at least 8 characters)</i></span>
-			</div>
+			<div style="margin-bottom:20px"></div>
 			<div class="inputs">
 				<button type="button" onClick="validate()">Register</button>
 				<button type="button" onClick="displayLogonPanel()">Back</button>
+			</div>
+			<div class="inputs">
+				<img src="images/loading.gif" style="display:none" id="loading-reg">
 			</div>
 			<p id="pass-alert"></p>
 		</form>

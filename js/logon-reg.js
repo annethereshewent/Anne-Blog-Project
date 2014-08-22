@@ -25,10 +25,20 @@ function validate() {
 		$("#pass2").next().show();
 		check = false;
 	}
+	//only letters, dashes and underscores allowed
+	var dispnameRE = /^[A-Za-z_\-]+$/;
+
+	if ($("#displayname").val() != "" && 	!dispnameRE.test($("#displayname").val())) {
+		var dispErr = $("#displayname").next();
+		$(dispErr).html("<i>only letters, underscores, and dashes allowed</i>");
+		$(dispErr).show();
+		check = false;
+	}
 	if (check) {
 		if ($("#pass1").val() == $("#pass2").val()) {
 			//call ajax to see if email exists. this will submit form if it does
-			usernameExists($("#email").val());
+			$("#loading-reg").show();
+			checkFieldsAjax($("#email").val(), $("#displayname").val());
 		}
 		else {
 			var errormsg = $("#pass2").next();
@@ -38,22 +48,40 @@ function validate() {
 	}
 }
 
-function usernameExists(username) {
+function checkFieldsAjax(username, displayname) {
 	//need ajax to get contents
 	var temp = "";
+	var check = true;
 	$.ajax({
 		type: "GET",
-		url: "check_username.php?user=" + username,
+		url: "check_fields.php",
+		data: {
+			user: username, 
+			display: displayname
+		},
 		success: function(data) {
-			if (data == 1) {
-				var user_warning = $("#email").next();
-				$(user_warning).html("<i>e-mail is already in use.</i>");
-				$(user_warning).show();
-				$("#pass-alert").html("<a href=\"forgotpassword.php\"><i>Forgot Password?</i></a>")
-				$("#pass-alert").fadeIn(300).show();
-				return false;
+			$("#loading-reg").hide();
+			if (data != "") {
+				var params = data.split(" ");
+				for (var i = 0; i < params.length; i++) {
+					if (params[i].trim() == "user") {
+						var user_warning = $("#email").next();
+						$(user_warning).html("<i>e-mail is already in use.</i>");
+						$(user_warning).show();
+						$("#pass-alert").html("<a href=\"forgotpassword.php\"><i>Forgot Password?</i></a>")
+						$("#pass-alert").fadeIn(300).show();
+						check = false;
+					}
+					else if (params[i].trim() == "display") {
+						var disp_warn = $("#displayname").next();
+						$(disp_warn).html("<i>username is already in use.</i>");
+						$(disp_warn).show();
+						check = false;
+					}
+				}
 			}
-			$("#register").submit();
+			if (check)
+				$("#register").submit();
 		}
 	});
 }

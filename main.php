@@ -1,12 +1,11 @@
 <?php
-include "common.php";
+require "common.php";
 
 
 $row = null;
 $messages = "";
 $result = null;
 $num_rows = 0;
-
 if (isset($_SESSION["userid"])) {
 	//get posts
 	$pageNumber = 1;
@@ -15,7 +14,9 @@ if (isset($_SESSION["userid"])) {
 	
 
 	$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
-	$num_rows = $result->rowCount();
+	
+	//gets the number of posts starting from the specified page. Used to determine pagination
+	$post_count = $conn->get_number_of_posts($pageNumber);	
 
 }
 else
@@ -25,11 +26,6 @@ else
 ?>
 
 <head>
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
-	<script src="js/froala_editor.min.js"></script>
-	
-	<script src="js/main.js" type="text/javascript"></script>
 	
 	<title>Welcome!</title>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
@@ -57,52 +53,75 @@ else
 	#simplemodal-overlay {
 		background: #000;
 	}
-	
 	</style>
 </head>
 <body>
-	<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
-	<div class="main">
-	<h2 style="text-align:center">Welcome!</h2>
-		<div class="tab-container">
-			<span class="tab"><a class="tlink" href="main.php">Main</a></span>
-			<span class="tab"><a class="tlink" href="#" onClick="openNewModal()">New</a></span>
-			<span class="tab">Profile</span>
-			<span class="tab"><a class="tlink" href="logout.php">Log Out</a></span>
-		</div>
+<aside class="sidebar">
+    <div class="sidebar-main">
+        <div class="title">
+            <?= $_SESSION["title"] ?>.
+        </div>
+        <div class="img-container">
+            <img class="sidebar-image" src="">
+        </div>
 
-			<?php if ($result != null) {
-				if (!$num_rows) { ?>
-					<div class="content" style="color:grey">
-						<i><h3>Your blog is empty. :(</h3>
-						<p>give your blog some loving and create your first post! We are so excited!</p></i>
-					</div>
-				<?php } 
-				else {
-					while ($row = $result->fetch()) { ?>
-						<div class="content">
-							<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
-							<div class="post"> 
-								<p><?= $row["post"]?></p>
-							</div>
-							<?php if ($row["edited"] == 1) { ?>
-								<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
-							<?php }?>
-							<div class="post-buttons" style="font-size:12px">
-								<a href="comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Make a Comment" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
-							</div>
+            <div class="description">
+               <?= "(description)" ?>
+            </div>
+
+        <nav class="links">
+            <ul>
+  				<!--make "new" and "account" viewable only to the person logged in -->
+                <li><a href="/main.php">home</a></li>
+                <li><a href="#" onClick="openNewModal();return false;">new</a></li>
+                <li><a href="/account.php">account</a></li>
+                <li><a href="contact.php">contact</a></li>
+                <li><a href="logout.php">log out</a></li>
+            </ul>
+        </nav>
+
+            <div class="pagination">
+            	<?= Common::getPageFooter($pageNumber, $post_count) ?>
+            </div>
+    </div>
+</aside>
+	<div class="main">
+		<?php if ($result != null) {
+			if (!$post_count) { ?>
+				<div class="content" style="color:grey">
+					<i><h3>Your blog is empty. :(</h3>
+					<p>give your blog some loving and create your first post! We are so excited!</p></i>
+				</div>
+			<?php } 
+			else {
+				while ($row = $result->fetch()) { ?>
+					<div class="content">
+						<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
+						<div class="post"> 
+							<p><?= $row["post"]?></p>
 						</div>
-						<div class="content-divider"></div>
-		<?php
-					}
+						<?php if ($row["edited"] == 1) { ?>
+							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
+						<?php }?>
+						<div class="post-buttons" style="font-size:12px">
+							<a href="comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Make a Comment" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+						</div>
+					</div>
+					<div class="content-divider"></div>
+	<?php
 				}
 			}
+		}
 
-		?>
-		<footer>
-			<?= Common::getPageFooter($pageNumber,$num_rows)  ?>
-		</footer>
+	?>
 	</div>
+
+	<!-- jQuery, misc js -->
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+	<script src="js/froala_editor.min.js"></script>
+	
+	<script src="js/main.js" type="text/javascript"></script>
 </body>
 
 <div class="content" id="postModal" style="display:none">

@@ -53,8 +53,8 @@ class MyDB {
 	}
 
 	public function register_user($record) {
-		$sql = "insert into users (username, password) 
-				values (:user, :pass)";
+		$sql = "insert into users (username, password, displayname, blog_title) 
+				values (:user, :pass, :display, :title)";
 		
 		//generate random salt, cost of 7
 		//$salt = '$2a$07$'.base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)); 
@@ -64,8 +64,10 @@ class MyDB {
 		//echo $hash;
 		
 		$params = array(
-			"user" => $record["email"],
-			"pass" => $hash
+			"user"    => $record["email"],
+			"pass"    => $hash,
+			"display" => $record['displayname'],
+			"title"   => $record['blog_title']
 		);
 
 		if ($this->command($sql, $params)) {
@@ -78,17 +80,18 @@ class MyDB {
 				"username" => $record["email"]
 			));
 			if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-				$_SESSION["username"] = $record["email"];
-				$_SESSION["userid"] = $row["id"];
-				Common::redirect("main.php");
+				
+				$_SESSION["userid"]      = $row["id"];
+				$_SESSION["title"]       = $record["blog_title"];
+				$_SESSION["displayname"] = $record["displaynae"];
+ 				
+ 				Common::redirect("main.php");
 			}
 		}
 	}
 
 	public function authenticate($username,$password) {
-		if (!isset($_SESSION["attempts"]))
-			$_SESSION["attempts"] = 0;	
-		$sql = "select id,username,password 
+		$sql = "select id,displayname,blog_title,password
 				from users 
 				where username=:user limit 1";
 		//echo $sql.", username = ".$username." and password=".$password;
@@ -101,20 +104,39 @@ class MyDB {
 			//need to check hashed password
 			if (password_verify($password,$row["password"])) { 
 				echo "authentication successful, logging in...<br>";
-				$_SESSION["userid"] = $row["id"];
-				$_SESSION["username"] = $row["username"];
+				
+				$_SESSION["userid"]      = $row["id"];
+				$_SESSION["displayname"] = $row["displayname"];
+				$_SESSION["title"]       = $row["blog_title"];
 				$stmt = null;
-				$_SESSION["attempts"] = null;
-				unset($_SESSION["attempts"]);
+
+			
 				Common::redirect("main.php");
 			}
 		}
 
 		echo "Authentication failed..";
-		$_SESSION["attempts"]++;
 		Common::redirect("login.php?error=Y");
 
 	}
+	//similar to authenticate, returns true or false
+	public function verify($password) {
+		$sql = "select password
+				from users 
+				where id=:id limit 1";
+		//echo $sql.", username = ".$username." and password=".$password;		
+		$stmt = $this->prepare($sql,array(
+			"id" => $_SESSION["userid"]
+		));
+		if ($row = $stmt->fetch()) {
+			//need to check hashed password
+			if (password_verify($password,$row["password"])) 
+				return true;
+		}
+		return false;
+
+	}
+
 
 	/*
 	same as prepare, but returns true or false.
@@ -144,22 +166,34 @@ class MyDB {
 
 	}
 
-	public function check_username($username) {
+	public function check_register($fields) {
+		$returnStr = "";
 		$sql = "select username 
 				from users 
 				where username = :username";
 
 		$stmt = $this->prepare($sql, array(
-			"username" => $username
+			"username" => $fields["user"]
 		));
-
 
 		if ($stmt->rowCount() > 0) {
 			$stmt = null;
-			return true;
+			$returnStr .= "user";
 		}
+		if ($fields["display"] != "") {
+			$sql = "select displayname
+					from users
+					where displayname = :display";
+			$stmt = $this->prepare($sql, array(
+				"display" => $fields["display"] 
+			));
 
-		return false;
+			if ($stmt->rowCount() > 0) {
+				$stmt = null;
+				$returnStr .= " display";
+			}
+		}
+		return $returnStr;
 	}
 
 	public function insert_post($content,$userID) {
@@ -259,14 +293,29 @@ class MyDB {
 				order by id desc limit :start, :fin";
 		
 		$stmt = $this->prepare($sql,array(
-				"userID" => $userID,
+				"userID" => $_SESSION['userid'],
 				"start"  => $start,
 				"fin"    => 15
 		));
 		$stmt->setFetchMode(PDO::FETCH_ASSOC);
 		return $stmt;
 	}
-
+	public function get_number_of_posts($page) {
+		$start = ($page == 1) ? 0 : 15*($page-1);
+		$sql = "select count(userID) as total
+				from 
+			    	(select userID
+			     	 from posts
+			     	 where userID=:userID
+			     	 order by id desc limit :start, :fin) tot";
+		$stmt = $this->prepare($sql, array(
+			"userID" => $_SESSION["userid"],
+			"start"  => $start,
+			"fin"    => 20
+		));
+		$row = $stmt->fetch();
+		return $row["total"];
+	}
 	public function fetch_post_comments($postID) {
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 
 				from  comments c, users u

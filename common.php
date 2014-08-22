@@ -20,19 +20,33 @@ class Common {
 			."alert(".$str.")</script>";
 	}
 	public static function getPageFooter($page,$num_posts) {
-		$returnStr = '<p class="pageFooter">';
-		if ($num_posts > 15) {
-			
+
+		if ($num_posts > 15) {			 
 			if ($page == 1) {
-				$returnStr .= '<a href="main.php?page='.($page+1).'">Next Page</a></p>';
+				$returnStr = '<span class="navi">
+								<a class="pagi-link" href="main.php?page='.($page+1).'">Next Page</a>
+							  </span>';
 				return $returnStr;
 			}
 
-			$returnStr .= '<a href="main.php?page='.($page-1).'">Previous Page</a>&nbsp;&nbsp;<a href="main.php?page='.($page+1).'">Next Page</p>';
+			$returnStr = '<span class="navi">
+							<a class="pagi-link" href="main.php?page='.($page-1).'">Previous Page</a>
+						  </span>
+						  <span class="navi" style="margin-left:60px">
+						  	<a class="pagi-link" href="main.php?page='.($page+1).'">Next Page</a>
+						  </span>
+						  <div style="margin-left:60px">Page '.$page.'</div>';
 			return $returnStr;
 		}
 
-		$returnStr .= $page == 1 ? '</p>' : '<a href="main.php?page='.($page-1).'">Previous Page</a></p>'; 
+		if ($page != 1) {
+			$returnStr = '<span class="navi">
+							<a class="pagi-link" href="main.php?page='.($page-1).'">Previous Page</a>
+						  </span>
+						  <div style="margin-left:60px">Page '.$page.'</div';
+			return $returnStr;
+		}
+		$returnStr = '<div style="margin-left:60px">Page 1</div>';
 		return $returnStr;
 	}
 }
