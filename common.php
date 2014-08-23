@@ -25,7 +25,8 @@ class Common {
 			if ($page == 1) {
 				$returnStr = '<span class="navi">
 								<a class="pagi-link" href="main.php?page='.($page+1).'">Next Page</a>
-							  </span>';
+							  </span>
+							  <div style="margin-left:60px">Page '.$page.'</div>';
 				return $returnStr;
 			}
 

@@ -1,6 +1,6 @@
 <?php
 require "common.php";
-$profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "images/user_icon.png";
+$profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png";
 ?>
 
 <html>
@@ -14,14 +14,14 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
 .form-heading {
     color:#6200A3;
 }
-#profile-pic {
+.profile-pic {
     max-width:80px;
     max-height:80px;
     -webkit-border-radius: 80px;
     -moz-border-radius: 80px;
     border-radius: 80px;
 }
-#profilepic-container {
+.profilepic-container {
     text-align:center;
     margin-bottom:20px;
 }
@@ -32,7 +32,7 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
     margin-top:-20px;
 }
 #security-row {
-    display:none;
+    opacity:0;
 }
 #profile-pic:hover {
     background:#000;
@@ -41,11 +41,49 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
     -moz-transition-duration: 0.5s;
 }
 #profilePicModal {
-    height:300px;
-    width:300px;
+    height:350px;
+    width:350px;
 }
 #simplemodal-overlay {
     background: #000;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+    text-align:center;
+    box-shadow: 3px 3px 1px #888888;
+
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.modal-upload {
+    margin-left:75px;
+    width:20%;
+    margin-bottom:20px
+}
+#fileupload-btn {
+    width:70px;
+    height:20px;
+}
+#description {
+    outline:none;
+    resize:none;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    witdh:120px;
+    height:80px;
 }
 </style>
 </head>
@@ -56,11 +94,11 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
             <?= $_SESSION["title"] ?>.
         </div>
         <div class="img-container">
-            <img class="sidebar-image" src="{image:Sidebar Image}">
+            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
         </div>
 
             <div class="description">
-               <?= "(description)" ?>
+               <?= $_SESSION["description"] ?>
             </div>
 
         <nav class="links">
@@ -77,22 +115,28 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
 	
     <div class="profile content">
         <h2 class="form-heading">General</h2>
-        <p class ="sub-heading">Display settings for general look and feel of blog.</p>
-        <form name="profile" id="profile" method="post" action="process_profile.php">
-            <div id="profilepic-container">
-                <a href="#" onClick="openEditProfPicModal(); return false;" ><img id="profile-pic" title="Change Profile Picture" src="<?= $profile_pic ?>" alt="images/user_icon.png"></img></a>
+        <p class ="sub-heading">Display settings for the general look and feel of blog.</p>
+        <form name="profile" id="profile" method="post" action="update_general.php">
+            <div class="profilepic-container">
+                <a href="#" onClick="openEditProfPicModal(); return false;" ><img class="profile-pic" title="Change Profile Picture" src="<?= $profile_pic ?>" alt="images/user_icon.png"></img></a>
             </div>
             <div class="inputs row">
                 <div class="col">
                     <label class="control-label">Blog Title:</label>
-                    <input type="text" class="control-text xlg" value="(blog title here)" id="blog-title" name="blog-title">
+                    <input type="text" class="control-text xlg" value="<?= $_SESSION["title"] ?>" id="blog_title" name="blog_title">
                 </div>
                 <div class="col">
                     <label class="control-label">Username:</label>
-                    <input type="text" class="control-text xlg" value="(username here)" id="username" name="username">
+                    <input type="text" class="control-text xlg" value="<?= $_SESSION["displayname"] ?>" id="username" name="username">
                 </div>
              </div>
-             <div style="margin-bottom:20px"></div>
+             <div style="margin-bottom:10px"></div>
+             <div style="margin-left:200px;margin-bottom:20px">    
+                 <div class="inputs row">
+                    <label class="control-label">Short Description of Blog:</label>
+                    <textarea class="control-text" name="description" id="description"><?= $_SESSION["description"] ?></textarea>
+                </div>
+            </div>
              <div class="inputs" style="text-align:center">
                 <button type="submit" class="btn confirm">Save Changes</button>
             </div>
@@ -103,7 +147,7 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
          <div id="secpass-section">
              <div class="inputs" id="secpass-section">
                 <label class="control-label"><i>Please enter current password to continue:</i></label>
-                <input type="password" class="control-text lg" name="sec-pass" id="sec-pass"> 
+                <input type="password" class="control-text lg" name="sec-pass" id="sec-pass" placeholder="Password"> 
             </div>
             <div class="inputs">
                 <button type="button" class="btn warn" onClick="checkPassword()">Verify</button>
@@ -138,6 +182,14 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
     <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
     <script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            $("#upload-pic").change(function() {
+                var temp = ($(this).val()).split("\\");
+                var filename = temp[temp.length-1];
+                temp = null;
+                $("#uploadTxt").val(filename);
+            });
+        });
         function checkPassword() {
             $("#loading-gif").show();
             $.ajax({
@@ -149,7 +201,7 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
                     $("#loading-gif").hide();
                     if (result) {
                         $("#secpass-section").fadeOut(500).hide();
-                        $("#security-row").fadeIn(500).show();
+                        $("#security-row").fadeIn(500).css("opacity", "1");
                     }
                 }
             });
@@ -159,7 +211,7 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
             $("#profilePicModal").fadeIn(500).modal({
                 opacity:50, 
                 overlayClose:true,
-                position: ["20%", "20%"]
+                position: ["200px", "200px"]
             });
         }
     </script>
@@ -167,11 +219,21 @@ $profile_pic = isset($_SESSION["profilepic"]) ? $_SESSION["profilepic"] : "image
 <div class="content" id="profilePicModal" style="display:none">
     <h2 class="form-heading">Update Avatar</h2>
     <p class="sub-heading">Avatar will be resized to 125x125 pixels.</p>
-    <form name="upd_profpic" id="upd_profpic" method="post" action="update_avatar.php">
-        <div style="text-align:center">
-            <img src="<?= $profile_pic ?>">
-            <input type="file" class="btn warn" class="control-text lg" placeholder="Upload Profile Picture">
-            <div><button type="submit" class="btn confirm">Upload</button></div>
+    <form enctype="multipart/form-data" name="upd_profpic" id="upd_profpic" method="post" action="update_avatar.php">
+        <div class="modal-upload">
+            <img style="margin-left:20px" class="profile-pic" src="<?= $profile_pic ?>">
+            <input type="text" id="uploadTxt" disabled="true" placeholder="Choose File.." style="border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px">            
+            <div class="fileUpload btn warn" id="fileupload-btn" style="margin-left:20px">
+                <span>Upload</span>
+                <input type="file" class="upload" name="upload-pic" id="upload-pic">
+            </div> 
+        </div>
+         <div class="inputs">
+            <button style="margin-right:40px" type="submit" class="btn confirm">Save Changes</button>
+            <button type="button" class="btn cancel simplemodal-close">Cancel</button>
+        </div>
+        <div class="inputs">
+            <img src="images/loading.gif" style="display:none" id="modal-loading">
         </div>
     </form>
 </div>

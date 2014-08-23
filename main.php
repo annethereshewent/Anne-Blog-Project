@@ -62,11 +62,11 @@ else
             <?= $_SESSION["title"] ?>.
         </div>
         <div class="img-container">
-            <img class="sidebar-image" src="">
+            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
         </div>
 
             <div class="description">
-               <?= "(description)" ?>
+               <?= $_SESSION["description"] ?>
             </div>
 
         <nav class="links">
@@ -96,7 +96,7 @@ else
 			else {
 				while ($row = $result->fetch()) { ?>
 					<div class="content">
-						<p style="font-size:small;"><i>Creation Date: <?= $row["created_on"] ?></i></p>
+						<p style="font-size:small;"><i>Creation Date: <?= date("m/d/y h:i A",strtotime($row["created_on"])) ?></i></p>
 						<div class="post"> 
 							<p><?= $row["post"]?></p>
 						</div>
@@ -129,7 +129,7 @@ else
 	<form name="newPost" id="newPost" method="post">
 			<div name="blogpost" id="editContents"></div>
 			<div  style="margin-left:15px;"class="buttonarea">
-		 	   <button type="button" onClick="submitContents()" id="blogSubmit">Post</button> <button type="button" class="simplemodal-close">Cancel</button>
+		 	   <button type="button" onClick="submitContents()" id="blogSubmit" class="btn confirm sm" style="margin-right:20px">Post</button><button type="button" class="simplemodal-close btn cancel sm">Cancel</button>
 			</div>
 			<input type="hidden" name="htmlContent" id="htmlContent">
 	</form>

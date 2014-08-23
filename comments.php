@@ -62,11 +62,11 @@ else
             <?= $_SESSION["title"] ?>.
         </div>
         <div class="img-container">
-            <img class="sidebar-image" src="">
+            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
         </div>
 
             <div class="description">
-               <?= "(description)" ?>
+               <?= $_SESSION["description"] ?>
             </div>
 
         <nav class="links">
@@ -82,7 +82,7 @@ else
 </aside>
 	<div class="main">
 		<div class="content">
-			<p style="font-size:small;"><i>Creation Date: <?= $post["created_on"] ?></i></p>
+			<p style="font-size:small;"><i>Creation Date: <?= date("m/d/y h:i A",strtotime($post["created_on"])) ?></i></p>
 			<div class="post"> 
 				<p><?= $post["post"]?></p>
 			</div>
@@ -96,7 +96,7 @@ else
 				<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
 				<input type="hidden" name="pid" value="<?= $postID ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" class="comment-submit">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()">Cancel</button>
+					<button type="submit" class="comment-submit btn primary">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()" class="btn cancel">Cancel</button>
 				</div>
 			</form>
 		</div>

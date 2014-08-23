@@ -91,7 +91,7 @@ class MyDB {
 	}
 
 	public function authenticate($username,$password) {
-		$sql = "select id,displayname,blog_title,password
+		$sql = "select id,displayname,blog_title,password,description,profile_pic
 				from users 
 				where username=:user limit 1";
 		//echo $sql.", username = ".$username." and password=".$password;
@@ -108,6 +108,8 @@ class MyDB {
 				$_SESSION["userid"]      = $row["id"];
 				$_SESSION["displayname"] = $row["displayname"];
 				$_SESSION["title"]       = $row["blog_title"];
+				$_SESSION["description"] = $row["description"];
+				$_SESSION["userpic"]     = $row["profile_pic"];
 				$stmt = null;
 
 			
@@ -329,6 +331,33 @@ class MyDB {
 		while ($row = $stmt->fetch())
 			$comments[ $row["parent"] ][] = new Comment($row);
 		return $comments;
+	}
+
+	public function update_profile_pic($path) {
+		$sql = "update users
+				set profile_pic = :path
+				where id = :userid";
+		$_SESSION["userpic"] = $path;
+		return $this->command($sql, array(
+			"path"   => $path,
+			"userid" => $_SESSION["userid"]
+		));
+	}
+
+	public function update_user_info($params) {
+		$sql = "update users
+				set ";
+		foreach ($params as $column => $value) {
+			$sql .= $column." = :".$column.",";
+		
+		}
+		
+		//remove trailing comma and add where clause 
+		$sql = trim($sql, ",")." 
+		where id=:userid";
+		
+		$params["userid"] = $_SESSION["userid"];
+		return $this->command($sql,$params);
 	}
 }
 ?>
