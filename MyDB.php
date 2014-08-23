@@ -343,13 +343,25 @@ class MyDB {
 			"userid" => $_SESSION["userid"]
 		));
 	}
-
+	/*
+				$_SESSION["userid"]      = $row["id"];
+				$_SESSION["displayname"] = $row["displayname"];
+				$_SESSION["title"]       = $row["blog_title"];
+				$_SESSION["description"] = $row["description"];
+				$_SESSION["userpic"]     = $row["profile_pic"];
+	*/
 	public function update_user_info($params) {
 		$sql = "update users
 				set ";
 		foreach ($params as $column => $value) {
 			$sql .= $column." = :".$column.",";
-		
+		    if ($column == "blog_title")
+		    	$_SESSION["title"] = $value;
+		    else if ($column == "profile_pic")
+		    	$_SESSION["userpic"] = $value;
+		    else 
+		    	$_SESSION[$column] = $value;
+
 		}
 		
 		//remove trailing comma and add where clause 
@@ -357,7 +369,7 @@ class MyDB {
 		where id=:userid";
 		
 		$params["userid"] = $_SESSION["userid"];
-		return $this->command($sql,$params);
+		$bool = $this->command($sql,$params);
 	}
 }
 ?>
