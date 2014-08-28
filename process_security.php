@@ -1,15 +1,19 @@
 <?php
 require "common.php";
 
-$email = isset($_GET["email"]) ? $_GET["email"] : "";
-$password = isset($_GET["pass1"]) ? $_GET["pass1"] : "";
+$email = isset($_POST["email"]) ? $_POST["email"] : "";
+$password = isset($_POST["pass1"]) ? $_POST["pass1"] : "";
 
 if ($email != "") {
-	if (!$conn->changeEmail($email))
+	if (!$conn->saveEmail($email)) {
+
+	}
 		Common::redirect("account.php?error");
 }
 if ($password != "") {
-	if (!$conn->changePassword($password))
+	if (!$conn->savePassword($password)) {
+
+	}
 		Common::redirect("account.php?error");
 
 }

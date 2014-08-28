@@ -370,25 +370,29 @@ class MyDB {
 		$bool = $this->command($sql,$params);
 	}
 	public function savePassword($password) {
-		$hash = password_hash($password, PASSWORD_DEFAULT);
-		$sql = "update users".
-				" set password = :password".
-				" where id = :id";
-		return $this->command($sql, array(
-			"password" => $hash,
-			"id"       => $_SESSION["userid"]
-		));
+		if ($password != "") {
+			$hash = password_hash($password, PASSWORD_DEFAULT);
+			$sql = "update users".
+					" set password = :password".
+					" where id = :id";
+			return $this->command($sql, array(
+				"password" => $hash,
+				"id"       => $_SESSION["userid"]
+			));
+		}
 
 	}
 	public function saveEmail($email) {
-		$sql = "update users".
-				" set username = :user".
-				" where id = :id";
+		if ($email != "") {
+			$sql = "update users".
+					" set username = :user".
+					" where id = :id";
 
-		return $this->command($sql, array(
-			"user" => $email,
-			"id"   => $_SESSION["userid"]
-		));
+			return $this->command($sql, array(
+				"user" => $email,
+				"id"   => $_SESSION["userid"]
+			));
+		}
 	}
 }
 ?>
