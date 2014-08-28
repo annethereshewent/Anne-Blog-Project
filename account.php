@@ -1,6 +1,7 @@
 <?php
 require "common.php";
 $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png";
+$errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
 ?>
 
 <html>
@@ -169,9 +170,10 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
                 </div>
                 <div class="inputs row">
                     <input type="password" placeholder="Re-enter Password" class="control-text lg" name="pass2" id="pass2" class="control-text lg">
+                    <p class="error"></p>
                 </div>
                 <div class="inputs" style="text-align:center">
-                    <button type="submit" class="btn confirm">Save Changes</button>
+                    <button type="button" onClick="validate()" class="btn confirm">Save Changes</button>
                 </div>
             </div>
         </form>
@@ -213,6 +215,25 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
                 overlayClose:true,
                 position: ["200px", "200px"]
             });
+        }
+        function validate() {
+            var errorMsg = $("#pass2").next();
+            $(errorMsg).hide();
+            if ($("#pass1").val() == "" && $("#email").val() == "" && $("#pass2").val() == "") {
+                $(errorMsg).html("<i>An error has occurred.</i>");
+                $(errorMsg).show();
+            }
+            else if ($("#pass1").val().length > 0 && $("#pass1").val().length < 8) {
+                $(errorMsg).html("<i>Password must be at least 8 characters.</i>");
+                $(errorMsg).show();
+            }
+            else if ($("#pass1").val() != $("#pass2").val()) {
+                $(errorMsg).html("<i>Passwords must match.</i>");
+                $(errorMsg).show();
+            }
+            else
+                $("#security-form").submit();
+
         }
     </script>
 </body>

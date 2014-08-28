@@ -7,6 +7,11 @@
 		font-size:30px;
 		
 	}
+	.error {
+		color:red;;
+		display:none;
+		font-size:10px;
+	}
 	.tab {
 		background:#CC3399;
 		width:200px;

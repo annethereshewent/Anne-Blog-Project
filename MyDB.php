@@ -147,9 +147,7 @@ class MyDB {
 	public function command($sql, $params) {
 		try {
 			$stmt = $this->DB->prepare($sql);
-			if ($stmt->execute($params))
-				return true;
-			return false;
+			return $stmt->execute($params);
 		} catch (Exception $e) {
 			var_dump($e->getMessage());
 			return false;
@@ -334,9 +332,9 @@ class MyDB {
 	}
 
 	public function update_profile_pic($path) {
-		$sql = "update users
-				set profile_pic = :path
-				where id = :userid";
+		$sql = "update users".
+				" set profile_pic = :path".
+				" where id = :userid";
 		$_SESSION["userpic"] = $path;
 		return $this->command($sql, array(
 			"path"   => $path,
@@ -370,6 +368,27 @@ class MyDB {
 		
 		$params["userid"] = $_SESSION["userid"];
 		$bool = $this->command($sql,$params);
+	}
+	public function savePassword($password) {
+		$hash = password_hash($password, PASSWORD_DEFAULT);
+		$sql = "update users".
+				" set password = :password".
+				" where id = :id";
+		return $this->command($sql, array(
+			"password" => $hash,
+			"id"       => $_SESSION["userid"]
+		));
+
+	}
+	public function saveEmail($email) {
+		$sql = "update users".
+				" set username = :user".
+				" where id = :id";
+
+		return $this->command($sql, array(
+			"user" => $email,
+			"id"   => $_SESSION["userid"]
+		));
 	}
 }
 ?>

@@ -29,11 +29,6 @@ if (isset($_SESSION["username"])) {
 		color:white;
 		border-top: 1px solid #000000;
 	}
-	.error {
-		color:red;;
-		display:none;
-		font-size:10px;
-	}
 	p {
 		font-family:Calibri;
 	}

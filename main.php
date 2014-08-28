@@ -27,7 +27,7 @@ else
 
 <head>
 	
-	<title>Welcome!</title>
+	<title><?= $_SESSION["title"] ?></title>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
