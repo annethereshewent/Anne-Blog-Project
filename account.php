@@ -4,13 +4,15 @@ if (!isset($_SESSION["login"])) {
     $errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
     Common::redirect("main.php?error");
 }
-
+$profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png"
     
 ?>
 
 <html>
 <head>
 <link href="css/default.css" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
 <style>
 .profile {
     width:600px;
@@ -110,6 +112,7 @@ if (!isset($_SESSION["login"])) {
             <ul>
   				<!--make "new" and "account" viewable only to the person logged in -->
                 <li><a href="/main.php">home</a></li>
+                <li><a href="#" onClick="openNewModal();return false;">new</a></li>
                 <li><a href="/account.php">control panel</a></li>
                 <li><a href="contact.php">contact</a></li>
                 <li><a href="logout.php">log out</a></li>
@@ -187,8 +190,13 @@ if (!isset($_SESSION["login"])) {
     <!-- jQuery, misc js -->
     <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
     <script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+    <script src="js/froala_editor.min.js"></script>
+    <script src="js/main.js"></script>
+
+
     <script type="text/javascript">
         $(document).ready(function() {
+            initEditor();
             $("#upload-pic").change(function() {
                 var temp = ($(this).val()).split("\\");
                 var filename = temp[temp.length-1];
@@ -260,6 +268,17 @@ if (!isset($_SESSION["login"])) {
         <div class="inputs">
             <img src="images/loading.gif" style="display:none" id="modal-loading">
         </div>
+    </form>
+</div>
+
+<div class="content" id="postModal" style="display:none">
+    <p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
+    <form name="newPost" id="newPost" method="post" action="newpost.php">
+            <div name="blogpost" id="editContents"></div>
+            <div  style="margin-left:15px;"class="buttonarea">
+               <button type="button" onClick="submitContents()" id="blogSubmit" class="btn confirm sm" style="margin-right:20px">Post</button><button type="button" class="simplemodal-close btn cancel sm">Cancel</button>
+            </div>
+            <input type="hidden" name="htmlContent" id="htmlContent">
     </form>
 </div>
 
