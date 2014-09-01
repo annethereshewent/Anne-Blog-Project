@@ -83,17 +83,38 @@ class MyDB {
 				
 				$_SESSION["userid"]      = $row["id"];
 				$_SESSION["title"]       = $record["blog_title"];
-				$_SESSION["displayname"] = $record["displaynae"];
+				$_SESSION["displayname"] = $record["displayname"];
  				
  				Common::redirect("main.php");
 			}
 		}
 	}
+	public function fetchUserInfo()  {
+		$sql = "select id,displayname,blog_title,password,description,profile_pic".
+			" from users ".
+			" where username=:user limit 1";
+
+		$stmt = $this->prepare($sql, array(
+			"user" => 'anne.castrillon@gmail.com'
+		));
+		if ($row = $stmt->fetch()) {
+			//set all the session variables
+
+			$_SESSION["userid"]      = $row["id"];
+			$_SESSION["displayname"] = $row["displayname"];
+			$_SESSION["title"]       = $row["blog_title"];
+			$_SESSION["description"] = $row["description"];
+			$_SESSION["userpic"]     = $row["profile_pic"];
+
+			$stmt = null;
+		}
+	}
 
 	public function authenticate($username,$password) {
-		$sql = "select id,displayname,blog_title,password,description,profile_pic
+		$sql = "select id,password
 				from users 
 				where username=:user limit 1";
+
 		//echo $sql.", username = ".$username." and password=".$password;
 		
 		$stmt = $this->prepare($sql,array(
@@ -105,15 +126,10 @@ class MyDB {
 			if (password_verify($password,$row["password"])) { 
 				echo "authentication successful, logging in...<br>";
 				
-				$_SESSION["userid"]      = $row["id"];
-				$_SESSION["displayname"] = $row["displayname"];
-				$_SESSION["title"]       = $row["blog_title"];
-				$_SESSION["description"] = $row["description"];
-				$_SESSION["userpic"]     = $row["profile_pic"];
+				$_SESSION["login"] = true;
 				$stmt = null;
 
-			
-				Common::redirect("main.php");
+				Common::redirect("account.php");
 			}
 		}
 

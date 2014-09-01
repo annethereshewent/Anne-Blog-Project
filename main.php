@@ -2,25 +2,28 @@
 require "common.php";
 
 
+
 $row = null;
 $messages = "";
 $result = null;
 $num_rows = 0;
-if (isset($_SESSION["userid"])) {
-	//get posts
-	$pageNumber = 1;
-	if (isset($_GET["page"])) 
-		$pageNumber = $_GET["page"];
-	
 
-	$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
-	
-	//gets the number of posts starting from the specified page. Used to determine pagination
-	$post_count = $conn->get_number_of_posts($pageNumber);	
+//get posts
+$pageNumber = 1;
+if (isset($_GET["page"])) 
+	$pageNumber = $_GET["page"];
 
-}
-else
-	Common::redirect("login.php?error=Y");
+//set profile pic, username, and title.
+if (!isset($_SESSION["userpic"]))
+	$conn->fetchUserInfo();
+
+$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
+
+
+
+
+//gets the number of posts starting from the specified page. Used to determine pagination
+$post_count = $conn->get_number_of_posts($pageNumber);	
 
 
 ?>
@@ -73,10 +76,14 @@ else
             <ul>
   				<!--make "new" and "account" viewable only to the person logged in -->
                 <li><a href="/main.php">home</a></li>
-                <li><a href="#" onClick="openNewModal();return false;">new</a></li>
-                <li><a href="/account.php">account</a></li>
-                <li><a href="contact.php">contact</a></li>
-                <li><a href="logout.php">log out</a></li>
+                <?php if (isset($_SESSION["login"])) {  ?> 
+                	<li><a href="#" onClick="openNewModal();return false;">new</a></li>
+                <?php } ?>            
+                <li><a href="/login.php">control panel</a></li>
+                <li><a href="/contact.php">contact</a></li>
+                <?php if (isset($_SESSION["login"])) { ?>
+                	<li><a href="/logout.php">logout</a></li>
+                <?php } ?> 
             </ul>
         </nav>
 
@@ -91,6 +98,7 @@ else
 				<div class="content" style="color:grey">
 					<i><h3>Your blog is empty. :(</h3>
 					<p>give your blog some loving and create your first post! We are so excited!</p></i>
+					
 				</div>
 			<?php } 
 			else {

@@ -1,19 +1,21 @@
 <?php 
 include "common.php";
 $msg = "";
+$conn->fetchUserInfo();
+$title = isset($_SESSION["title"]) ? $_SESSION["title"] : "";
+
 
 if (!empty($_GET)) {
 	if (isset($_GET["error"])) 	
-		$msg = "<p class=\"error\">Imposter detected! Red alert! weeooowweeeeowoeeooo</p>";
+		$msg = "Incorrect username or password";
 } 
-if (isset($_SESSION["username"])) { 
-	Common::redirect("main.php");
-	
-}
+if (isset($_SESSION["login"])) 
+	Common::redirect("account.php");
+
 ?>
 
 <head>
-	<title>Blogger</title>
+	<title><?= $title ?></title>
 	<link href="css/default.css" rel="stylesheet" type="text/css">
 	<script src="js/logon-reg.js" type="text/javascript"></script>
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -74,8 +76,8 @@ if (isset($_SESSION["username"])) {
 	
 </head>
 <body>
-<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
-<p class="error" style="text-align:center"><?= $msg ?>
+<h1 class="logo"><span class="logo-bracket">[</span><?= $title ?><span class="logo-bracket">].</span></h1>
+<p style="text-align:center;color:red"><?= $msg ?>
 <div id="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
 	<form name="login" id="login" method="post" action="checkLogIn.php">
@@ -92,11 +94,12 @@ if (isset($_SESSION["username"])) {
 		</div>
 	</form>
 </div>
+<a style="margin-left:370px;" href="main.php">Back</a>
 <div id="validate"><?= $msg ?></div>
 <div class="content" id="registerpanel">
 	<p style="color:#5200A3"><i>Please fill in the required fields.</i></p>
 	<div>
-		<form name="register" id="register" method="post" action="checkRegister.php">
+		<form name="register" id="register" method="post" action="check$msg">
 			<div class="inputs row">
 				<label class="control-label"><i>
 				<div class="col">

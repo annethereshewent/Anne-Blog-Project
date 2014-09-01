@@ -1,7 +1,11 @@
 <?php
 require "common.php";
-$profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png";
-$errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
+if (!isset($_SESSION["login"])) {
+    $errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
+    Common::redirect("main.php?error");
+}
+
+    
 ?>
 
 <html>
@@ -106,7 +110,7 @@ $errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
             <ul>
   				<!--make "new" and "account" viewable only to the person logged in -->
                 <li><a href="/main.php">home</a></li>
-                <li><a href="/account.php">account</a></li>
+                <li><a href="/account.php">control panel</a></li>
                 <li><a href="contact.php">contact</a></li>
                 <li><a href="logout.php">log out</a></li>
             </ul>
@@ -116,7 +120,7 @@ $errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
 	
     <div class="profile content">
         <h2 class="form-heading">General</h2>
-        <p class ="sub-heading">Display settings for the general look and feel of blog.</p>
+        <p class ="sub-heading">Display settings for the general look and feel of your blog.</p>
         <form name="profile" id="profile" method="post" action="update_general.php">
             <div class="profilepic-container">
                 <a href="#" onClick="openEditProfPicModal(); return false;" ><img class="profile-pic" title="Change Profile Picture" src="<?= $profile_pic ?>" alt="images/user_icon.png"></img></a>
