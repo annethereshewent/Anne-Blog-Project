@@ -1,7 +1,7 @@
 <?php 
 include "common.php";
 $msg = "";
-$conn->fetchUserInfo();
+
 $title = isset($_SESSION["title"]) ? $_SESSION["title"] : "";
 
 

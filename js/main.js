@@ -11,6 +11,7 @@ function initEditor() {
 		inverseSkin: true,
 	});
 }
+
 function submitContents() {
 	var content = $("#editContents").editable("getHTML");
 	$("#htmlContent").val(content);

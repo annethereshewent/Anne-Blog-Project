@@ -90,16 +90,18 @@ else
 				<a href="#" onClick="$('#new-textbox-container').show()">New Comment</a>&nbsp;&nbsp;<a href="main.php">Back</a>
 			</div>
 		</div>
-		<div class="content-divider"></div>
-		<div class="content comment-container" id="new-textbox-container">
-			<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
-				<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
-				<input type="hidden" name="pid" value="<?= $postID ?>">
-				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
-					<button type="submit" class="comment-submit btn primary">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()" class="btn cancel">Cancel</button>
-				</div>
-			</form>
-		</div>
+		<?php if (isset($_SESSION["login"])) { ?>
+			<div class="content-divider"></div>
+			<div class="content comment-container" id="new-textbox-container">
+				<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
+					<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
+					<input type="hidden" name="pid" value="<?= $postID ?>">
+					<div class="buttonarea" style="margin-top:10px;margin-left:10px">
+						<button type="submit" class="comment-submit btn primary">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()" class="btn cancel">Cancel</button>
+					</div>
+				</form>
+			</div>
+		<? } ?>
 		<div class="content-divider"></div>
 		<? if (sizeof($commentTree[0]) != 0) { ?>
 			<div class="content" id="comments-box">

@@ -7,7 +7,9 @@ function __autoload($class_name) {
 session_start();
 	
 $conn = new MyDB($config["HOST"], $config["USERNAME"],$config["PASSWORD"],$config["DB"]) or die("Error connecting: ".$conn->error());
-
+if (!isset($_SESSION["userid"])) {
+	$conn->fetchUserInfo();
+}
 
 class Common {
 	//parsing, useful javascript functions, general utility

@@ -97,8 +97,7 @@ $post_count = $conn->get_number_of_posts($pageNumber);
 			if (!$post_count) { ?>
 				<div class="content" style="color:grey">
 					<i><h3>Your blog is empty. :(</h3>
-					<p>give your blog some loving and create your first post! We are so excited!</p></i>
-					
+					<p>give your blog some loving and create your first post!</p></i>				
 				</div>
 			<?php } 
 			else {
