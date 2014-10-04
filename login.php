@@ -10,7 +10,7 @@ if (!empty($_GET)) {
 		$msg = "Incorrect username or password";
 } 
 if (isset($_SESSION["login"])) 
-	Common::redirect("account.php");
+	Common::redirect("/blog/".$_SESSION["displayname"]);
 
 ?>
 
@@ -76,7 +76,7 @@ if (isset($_SESSION["login"]))
 	
 </head>
 <body>
-<h1 class="logo"><span class="logo-bracket">[</span><?= $title ?><span class="logo-bracket">].</span></h1>
+<h1 class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
 <p style="text-align:center;color:red"><?= $msg ?>
 <div id="logonpanel">
 	<h2 style="padding-left:10px">Welcome!</h2>
@@ -94,19 +94,18 @@ if (isset($_SESSION["login"]))
 		</div>
 	</form>
 </div>
-<a style="margin-left:370px;" href="main.php">Back</a>
 <div id="validate"><?= $msg ?></div>
 <div class="content" id="registerpanel">
 	<p style="color:#5200A3"><i>Please fill in the required fields.</i></p>
 	<div>
-		<form name="register" id="register" method="post" action="check$msg">
+		<form name="register" id="register" method="post" action="/checkRegister.php">
 			<div class="inputs row">
 				<label class="control-label"><i>
 				<div class="col">
 					<input type="text" name="btitle" id="btitle" class="control-text lg" placeholder="Blog Title (Optional)"><span class="error"></span>
 				</div>
 				<div class="col" style="margin-left:20px">
-					<input type="text" placeholder="Display Name (Optional)" name="displayname" class="control-text lg" id="displayname"><span class="error"></span>
+					<input type="text" placeholder="Display Name" name="displayname" class="control-text lg" id="displayname"><span class="error"></span>
 				</div>
 			</div>
 			<div style="margin-bottom:20px"></div>	
@@ -126,15 +125,15 @@ if (isset($_SESSION["login"]))
 				</div>
 			</div>
 			<div style="margin-bottom:20px"></div>
-			<div class="inputs">
-				<button type="button" onClick="validate()">Register</button>
-				<button type="button" onClick="displayLogonPanel()">Back</button>
+			<div class="inputs" style="margin-left:30px">
+				<button type="button" class="btn confirm" onClick="validate()">Register</button>
+				<button type="button" class="btn cancel" onClick="displayLogonPanel()">Back</button>
 			</div>
 			<div class="inputs">
 				<img src="images/loading.gif" style="display:none" id="loading-reg">
 			</div>
 			<p id="pass-alert"></p>
-		</form>
+		</form>		
 	</div>
 </div>
 </body>

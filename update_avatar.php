@@ -12,7 +12,7 @@ if ($_FILES["upload-pic"]["error"] > 0)
 	//Common::redirect("account.php?error");
 if (in_array($_FILES["upload-pic"]["type"], $allowedExts) && $_FILES["upload-pic"]["size"] < (20*1024*1024)) {
 	
-	$directory = "user_pics/";
+	$directory = "/user_pics/";
 	$filename = uniqid("userpic-",true).".".$ext;
 
 	move_uploaded_file($_FILES["upload-pic"]["tmp_name"], $directory.$filename);

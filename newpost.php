@@ -2,16 +2,16 @@
 include "common.php";
 
 if (!isset($_SESSION))
-	jsRedirect("login.php?error=Y");
+	Common::redirect("login.php?error=Y");
 if (isset($_POST["htmlContent"])) {
 
 	if ($conn->insert_post($_POST["htmlContent"], $_SESSION["userid"])) 
-		Common::redirect("main.php?success=Y");
+		Common::redirect("/blog/".$_SESSION["displayname"]);
 	else 
-		Common::redirect("main.phpsuccess=N");	
+		Common::redirect("/blog/".$_SESSION["displayname"]);	
 }
 else {
 	echo "something went wrong";
-	exit;
+	Common::redirect("/blog/".$_SESSION["displayname"]."?error");
 }
 ?>

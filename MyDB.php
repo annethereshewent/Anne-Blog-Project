@@ -53,6 +53,8 @@ class MyDB {
 	}
 
 	public function register_user($record) {
+		
+
 		$sql = "insert into users (username, password, displayname, blog_title) 
 				values (:user, :pass, :display, :title)";
 		
@@ -84,34 +86,15 @@ class MyDB {
 				$_SESSION["userid"]      = $row["id"];
 				$_SESSION["title"]       = $record["blog_title"];
 				$_SESSION["displayname"] = $record["displayname"];
+				$_SESSION["login"]       = true;
  				
- 				Common::redirect("main.php");
+ 				Common::redirect("/blog/".$_SESSION["displayname"]);
 			}
-		}
-	}
-	public function fetchUserInfo()  {
-		$sql = "select id,displayname,blog_title,password,description,profile_pic".
-			" from users ".
-			" where username=:user limit 1";
-
-		$stmt = $this->prepare($sql, array(
-			"user" => 'anne.castrillon@gmail.com'
-		));
-		if ($row = $stmt->fetch()) {
-			//set all the session variables
-
-			$_SESSION["userid"]      = $row["id"];
-			$_SESSION["displayname"] = $row["displayname"];
-			$_SESSION["title"]       = $row["blog_title"];
-			$_SESSION["description"] = $row["description"];
-			$_SESSION["userpic"]     = $row["profile_pic"];
-
-			$stmt = null;
 		}
 	}
 
 	public function authenticate($username,$password) {
-		$sql = "select id,password
+		$sql = "select id,password,displayname,blog_title,description,profile_pic
 				from users 
 				where username=:user limit 1";
 
@@ -126,10 +109,17 @@ class MyDB {
 			if (password_verify($password,$row["password"])) { 
 				echo "authentication successful, logging in...<br>";
 				
-				$_SESSION["login"] = true;
+				$_SESSION["userid"]      = $row["id"];
+				$_SESSION["title"]       = $row["blog_title"];
+				$_SESSION["displayname"] = $row["displayname"];
+				$_SESSION["login"]       = true;
+				$_SESSION["userpic"]     = $row["profile_pic"];
+				$_SESSION["description"] = $row["description"];
+				
 				$stmt = null;
-
-				Common::redirect("account.php");
+				
+				$url = "/blog/".$_SESSION["displayname"];
+				Common::redirect("/blog/".$_SESSION["displayname"]);
 			}
 		}
 
@@ -265,7 +255,7 @@ class MyDB {
 		return $statement;
 	}
 	/* 
-	fetches a post record from database and returns it. good for formatting
+	fetches a post from database and returns it. good for formatting
 	*/
 	public function fetch_post($pID) {
 
@@ -296,41 +286,87 @@ class MyDB {
 		return $this->mysqli->query($sql);
 	}
 
-	public function fetch_user_posts_by_page($userID,$page) {
+	public function fetch_user_posts_by_page($page) {
+
+
+		//gets username from the uri
+		$temp = explode("/",$_SERVER["REQUEST_URI"]);
+		$username = $temp[2];
+		$page = isset($temp[3]) ? $temp[3] : 1;
+
 		//to prevent with tampering
 		if (!is_numeric($page))
 			$page = 1;
 
+		$sql = "select displayname".
+				" from users".
+				" where displayname = :displayname";
+		$stmt = $this->prepare($sql, array(
+			"displayname" => $username	
+		));
+
+		if ($stmt->rowCount() == 0) 
+			Common::redirect("/error.php");
+		//else keep going
+
+
 		$start = ($page == 1) ? 0 : 15*($page-1);
 
-		$sql = "select id, post, created_on, edited_on, edited, num_comments 
-				from posts 
-				where userID=:userID
+		$sql = "select p.id, post, created_on, edited_on, edited, num_comments 
+				from posts p,users u 
+				where displayname = :displayname and u.id = p.userID
 				order by id desc limit :start, :fin";
 		
 		$stmt = $this->prepare($sql,array(
-				"userID" => $_SESSION['userid'],
-				"start"  => $start,
-				"fin"    => 15
+				"displayname" => $username,
+				"start"       => $start,
+				"fin"         => 15
 		));
 		$stmt->setFetchMode(PDO::FETCH_ASSOC);
+
 		return $stmt;
 	}
 	public function get_number_of_posts($page) {
+		$username = explode("/",$_SERVER["REQUEST_URI"])[2];
 		$start = ($page == 1) ? 0 : 15*($page-1);
 		$sql = "select count(userID) as total
 				from 
 			    	(select userID
-			     	 from posts
-			     	 where userID=:userID
-			     	 order by id desc limit :start, :fin) tot";
+			     	 from posts p, users u
+			     	 where displayname = :display and p.userID = u.id
+			     	 order by p.id desc limit :start, :fin) tot";
 		$stmt = $this->prepare($sql, array(
-			"userID" => $_SESSION["userid"],
-			"start"  => $start,
-			"fin"    => 20
+			"display" => $username,
+			"start"   => $start,
+			"fin"     => 20
 		));
 		$row = $stmt->fetch();
 		return $row["total"];
+	}
+	public function get_page_info() {
+		$temp = explode("/", $_SERVER["REQUEST_URI"]);
+		$info = array();
+		$info["blog"] = isset($temp[2]) ? $temp[2] : "";
+		$info["page"] = (isset($temp[3]) && is_numeric($temp[3])) ? $temp[3] : 1;
+
+
+		//get page's user picture, title, description, etc
+
+		$sql = "select blog_title, profile_pic, description"
+				." from users"
+				." where displayname = :displayname limit 1";
+
+		$stmt = $this->prepare($sql, array(
+			"displayname" => $info["blog"]
+		));
+		$stmt->setFetchMode(PDO::FETCH_ASSOC);
+		$row = $stmt->fetch();
+		$info = array_merge($info, $row);
+
+		//var_dump($info);
+		//exit;
+
+		return $info;
 	}
 	public function fetch_post_comments($postID) {
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 

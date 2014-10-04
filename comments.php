@@ -1,5 +1,5 @@
 <?php
-include "common.php";
+require "common.php";
 
 
 if (isset($_GET["pid"]) && $_GET["pid"] != "") {
@@ -53,7 +53,7 @@ else
 	}
 
 	</style>
-	<link href="css/default.css" rel="stylesheet" type="text/css">
+	<link href="/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <aside class="sidebar">
@@ -61,9 +61,11 @@ else
         <div class="title">
             <?= $_SESSION["title"] ?>.
         </div>
-        <div class="img-container">
-            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
-        </div>
+		<?php if (isset($_SESSION["userpic"])) { ?>
+	        <div class="img-container">
+	            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
+	        </div>
+        <?php } ?>
 
             <div class="description">
                <?= $_SESSION["description"] ?>
@@ -71,13 +73,18 @@ else
 
         <nav class="links">
             <ul>
-  				<!--make "new" and "account" viewable only to the person logged in -->
-                <li><a href="/main.php">home</a></li>
-                <li><a href="/account.php">control panel</a></li>
-                <li><a href="contact.php">contact</a></li>
+                <li><a href="/blog/<?= $_SESSION["displayname"] ?>">home</a></li>
+                
+                <?php if (isset($_SESSION["login"])) {  ?> 
+                	<li><a href="#" onClick="openNewModal();return false;">new</a></li>
+                <?php } ?>            
+                
+                <li><a href="/login.php">control panel</a></li>
+                <li><a href="/contact.php">contact</a></li>
+                
                 <?php if (isset($_SESSION["login"])) { ?>
-                	<li><a href="logout.php">log out</a></li>
-                <?php } ?>
+                	<li><a href="/logout.php">logout</a></li>
+                <?php } ?> 
             </ul>
         </nav>
     </div>
@@ -89,11 +96,11 @@ else
 				<p><?= $post["post"]?></p>
 			</div>
 			<div class="post-buttons" style="font-size:12px">
-				<?php if (isset($_SESSSION["login"])) { ?>
+				<?php if (isset($_SESSION["login"])) { ?>
 					<a href="#" onClick="$('#new-textbox-container').show()">New Comment</a>
 				<?php } ?>
 				&nbsp;&nbsp;
-				<a href="main.php">Back</a>
+				<a href="/blog/<?= $_SESSION["displayname"] ?>">Back</a>
 			</div>
 		</div>
 		<div class="content-divider"></div>
@@ -112,7 +119,7 @@ else
 				<?= Comment::printCommentTree($commentTree,0) ?>
 			</div>
 		<? } ?>
-		<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>	
+		<script src="/js/jquery-2.1.1.min.js" type="text/javascript"></script>	
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$(".comment-submit").attr("disabled","true");

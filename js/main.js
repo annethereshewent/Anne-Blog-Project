@@ -26,7 +26,7 @@ function openModal() {
 }
 function openNewModal() {
 	openModal();
-	$("#newPost").attr("action", "newpost.php");
+	$("#newPost").attr("action", "/newpost.php");
 }
 function openEditModal(pid) {
 	//need ajax to get contents
@@ -41,7 +41,7 @@ function openEditModal(pid) {
 			initEditor();
 			$("#editContents").editable("focus");
 			$("#editContents").editable("setHTML",data);
-			$("#newPost").attr("action", "edit.php?pID=" + pid);
+			$("#newPost").attr("action", "/edit.php?pID=" + pid);
 			$("#blogSubmit").text("Edit"); 
 		}
 	});

@@ -9,31 +9,31 @@ $result = null;
 $num_rows = 0;
 
 //get posts
-$pageNumber = 1;
-if (isset($_GET["page"])) 
-	$pageNumber = $_GET["page"];
+//$pageNumber = Common::getPageNum();
+$info = $conn->get_page_info();
 
-//set profile pic, username, and title.
-if (!isset($_SESSION["userpic"]))
-	$conn->fetchUserInfo();
 
-$result = $conn->fetch_user_posts_by_page($_SESSION["userid"],$pageNumber);
 
+if (isset($_GET["user"])) 
+	$result = $conn->fetch_user_posts_by_page($info["page"]);
+else 
+	Common::redirect("/error.php");
 
 
 
 //gets the number of posts starting from the specified page. Used to determine pagination
-$post_count = $conn->get_number_of_posts($pageNumber);	
+$post_count = $conn->get_number_of_posts($info["page"]);
+
 
 
 ?>
 
 <head>
 	
-	<title><?= $_SESSION["title"] ?></title>
-	<link href="css/default.css" rel="stylesheet" type="text/css">
+	<title><?= $info["blog_title"] ?></title>
+	<link href="/css/default.css" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
+	<link href="/css/froala_editor.min.css" rel="stylesheet" type="text/css">
 	
 
 	
@@ -62,25 +62,27 @@ $post_count = $conn->get_number_of_posts($pageNumber);
 <aside class="sidebar">
     <div class="sidebar-main">
         <div class="title">
-            <?= $_SESSION["title"] ?>.
+            <?= isset($info["blog_title"]) ? $info["blog_title"] : "" ?>
         </div>
-        <div class="img-container">
-            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
+        <?php if (isset($info["profile_pic"])) { ?>
+	        <div class="img-container">
+	            <img class="sidebar-image" src="<?= $info["profile_pic"] ?>">
+	        </div>
+        <?php } ?>
+        <div class="description">
+           <?= isset($info["description"]) ? $info["description"] : "" ?>
         </div>
-
-            <div class="description">
-               <?= $_SESSION["description"] ?>
-            </div>
-
         <nav class="links">
             <ul>
-  				<!--make "new" and "account" viewable only to the person logged in -->
-                <li><a href="/main.php">home</a></li>
+                <li><a href="/blog/<?= $info["blog"] ?>">home</a></li>
+                
                 <?php if (isset($_SESSION["login"])) {  ?> 
                 	<li><a href="#" onClick="openNewModal();return false;">new</a></li>
                 <?php } ?>            
-                <li><a href="/login.php">control panel</a></li>
+                
+                <li><a href="/account.php">control panel</a></li>
                 <li><a href="/contact.php">contact</a></li>
+                
                 <?php if (isset($_SESSION["login"])) { ?>
                 	<li><a href="/logout.php">logout</a></li>
                 <?php } ?> 
@@ -88,7 +90,7 @@ $post_count = $conn->get_number_of_posts($pageNumber);
         </nav>
 
             <div class="pagination">
-            	<?= Common::getPageFooter($pageNumber, $post_count) ?>
+            	<?= Common::getPageFooter($info["page"], $post_count) ?>
             </div>
     </div>
 </aside>
@@ -111,7 +113,7 @@ $post_count = $conn->get_number_of_posts($pageNumber);
 							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
 						<?php }?>
 						<div class="post-buttons" style="font-size:12px">
-							<a href="comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Make a Comment" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+							<a href="/comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Comments" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
 						</div>
 					</div>
 					<div class="content-divider"></div>
@@ -124,11 +126,11 @@ $post_count = $conn->get_number_of_posts($pageNumber);
 	</div>
 
 	<!-- jQuery, misc js -->
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
-	<script src="js/froala_editor.min.js"></script>
+	<script src="/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+	<script src="/js/froala_editor.min.js"></script>
 	
-	<script src="js/main.js" type="text/javascript"></script>
+	<script src="/js/main.js" type="text/javascript"></script>
 </body>
 
 <div class="content" id="postModal" style="display:none">

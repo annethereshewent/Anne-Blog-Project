@@ -1,18 +1,20 @@
 <?php
 require "common.php";
-if (!isset($_SESSION["login"])) {
-    $errorMsg = isset($_GET["error"]) ? $_GET["error"] : "";
-    Common::redirect("main.php?error");
-}
-$profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png"
+
+if (!isset($_SESSION["login"]))
+    Common::redirect("/main.php");
+
+$profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png";
+
+
     
 ?>
 
 <html>
 <head>
-<link href="css/default.css" rel="stylesheet" type="text/css">
+<link href="/css/default.css" rel="stylesheet" type="text/css">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="css/froala_editor.min.css" rel="stylesheet" type="text/css">
+<link href="/css/froala_editor.min.css" rel="stylesheet" type="text/css">
 <style>
 .profile {
     width:600px;
@@ -100,9 +102,11 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
         <div class="title">
             <?= $_SESSION["title"] ?>.
         </div>
-        <div class="img-container">
-            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
-        </div>
+        <?php if (isset($_SESSION["userpic"]) && $_SESSION["userpic"] != "") { ?>
+            <div class="img-container">
+                <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
+            </div>
+        <?php } ?>
 
             <div class="description">
                <?= $_SESSION["description"] ?>
@@ -110,12 +114,18 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
 
         <nav class="links">
             <ul>
-  				<!--make "new" and "account" viewable only to the person logged in -->
-                <li><a href="/main.php">home</a></li>
-                <li><a href="#" onClick="openNewModal();return false;">new</a></li>
-                <li><a href="/account.php">control panel</a></li>
-                <li><a href="contact.php">contact</a></li>
-                <li><a href="logout.php">log out</a></li>
+                <li><a href="/blog/<?= $_SESSION["displayname"] ?>">home</a></li>
+                
+                <?php if (isset($_SESSION["login"])) {  ?> 
+                    <li><a href="#" onClick="openNewModal();return false;">new</a></li>
+                <?php } ?>            
+                
+                <li><a href="/login.php">control panel</a></li>
+                <li><a href="/contact.php">contact</a></li>
+                
+                <?php if (isset($_SESSION["login"])) { ?>
+                    <li><a href="/logout.php">logout</a></li>
+                <?php } ?> 
             </ul>
         </nav>
     </div>
@@ -141,8 +151,8 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
              <div style="margin-bottom:10px"></div>
              <div style="margin-left:200px;margin-bottom:20px">    
                  <div class="inputs row">
-                    <label class="control-label">Short Description of Blog:</label>
-                    <textarea class="control-text" name="description" id="description"><?= $_SESSION["description"] ?></textarea>
+                    <label class="control-label">Short Description of your Blog:</label>
+                    <textarea class="control-text" name="description" id="description"><?= isset($_SESSION["description"]) ? $_SESSION["description"] : "" ?></textarea>
                 </div>
             </div>
              <div class="inputs" style="text-align:center">
@@ -188,10 +198,10 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
 
 
     <!-- jQuery, misc js -->
-    <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-    <script src="js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
-    <script src="js/froala_editor.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.simplemodal-1.4.4.js" type="text/javascript"></script>
+    <script src="/js/froala_editor.min.js"></script>
+    <script src="/js/main.js"></script>
 
 
     <script type="text/javascript">
@@ -257,7 +267,7 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
             <img style="margin-left:20px" class="profile-pic" src="<?= $profile_pic ?>">
             <input type="text" id="uploadTxt" disabled="true" placeholder="Choose File.." style="border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px">            
             <div class="fileUpload btn warn" id="fileupload-btn" style="margin-left:20px">
-                <span>Upload</span>
+                <span>Select</span>
                 <input type="file" class="upload" name="upload-pic" id="upload-pic">
             </div> 
         </div>

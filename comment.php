@@ -1,7 +1,7 @@
 <?php 
 class Comment {
 	
-	public $id,$comment,$created_on,$parent,$postID,$username;
+	private $id,$comment,$created_on,$parent,$postID,$username;
 	private $comments=array();
 	//constructor
 	public function __construct($row) {
