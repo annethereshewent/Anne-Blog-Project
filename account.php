@@ -2,7 +2,7 @@
 require "common.php";
 
 if (!isset($_SESSION["login"]))
-    Common::redirect("/main.php");
+    Common::redirect("/login.php");
 
 $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user_icon.png";
 
