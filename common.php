@@ -26,7 +26,7 @@ class Common {
 		//get page number from the URI, the third element in temp
 		$temp = explode("/",$_SERVER["REQUEST_URI"]);
 		$page = isset($temp[3]) ? $temp[3] : 1;
-		
+
 		return is_numeric($page) ? $page : 1; 
 	}
 	public static function getPageFooter($page,$num_posts) {
@@ -59,6 +59,20 @@ class Common {
 		}
 		$returnStr = '<div style="margin-left:60px">Page 1</div>';
 		return $returnStr;
+	}
+	public static function getCommentText($num_comments) {
+		switch($num_comments) {
+			case 0:
+				return "Comments";
+				break;
+			case 1:
+				return $num_comments." Comment";
+				break;
+			default:
+				return $num_comments." Comments";
+			
+
+		}
 	}
 }
 ?>

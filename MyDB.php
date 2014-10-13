@@ -368,6 +368,15 @@ class MyDB {
 
 		return $info;
 	}
+	public function deletePost($pID) {
+		$sql = "delete from posts "
+				."where id = :id";
+		if ($this->command($sql, array("id" => $pID))) {
+			echo "success";
+		}
+		else
+			echo "failure";
+	}
 	public function fetch_post_comments($postID) {
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 
 				from  comments c, users u

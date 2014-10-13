@@ -46,4 +46,24 @@ function openEditModal(pid) {
 		}
 	});
 }
+function deletePost(pID) {
+	var r = confirm("Are you sure you want to delete this post?");
+	if (r) {
+		$.ajax({
+			url: "/deletePost.php",			
+			type: "post",
+			data: { pID: pID },
+			success: function(data) {
+				console.log(data);
+				if (data == "success") {
+					$("#post_" + pID).fadeOut(500).slideUp(500);
+				}
+				else {
+
+					alert("an error has occurred");
+				}
+			}
+		});
+	}
+}
 

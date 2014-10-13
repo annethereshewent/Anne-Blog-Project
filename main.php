@@ -32,7 +32,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 	
 	<title><?= $info["blog_title"] ?></title>
 	<link href="/css/default.css" rel="stylesheet" type="text/css">
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/css/font-awesome.min.css" rel="stylesheet">
 	<link href="/css/froala_editor.min.css" rel="stylesheet" type="text/css">
 	
 
@@ -104,7 +104,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 			<?php } 
 			else {
 				while ($row = $result->fetch()) { ?>
-					<div class="content">
+					<div class="content" id="post_<?= $row["id"] ?>">
 						<p style="font-size:small;"><i>Creation Date: <?= date("m/d/y h:i A",strtotime($row["created_on"])) ?></i></p>
 						<div class="post"> 
 							<p><?= $row["post"]?></p>
@@ -113,7 +113,12 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
 						<?php }?>
 						<div class="post-buttons" style="font-size:12px">
-							<a href="/comments.php?pid=<?= $row["id"] ?>"><?= $row["num_comments"] == 0 ? "Comments" : $row["num_comments"]." Comments" ?></a>&nbsp;&nbsp;<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+							<a href="/comments.php?pid=<?= $row["id"] ?>"><?= Common::getCommentText($row["num_comments"]) ?></a>
+							&nbsp;&nbsp;
+							<?php if (isset($_SESSION["login"])) { ?>
+								<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
+								<a class="delete" href="#" onclick="deletePost(<?= $row["id"] ?>);return false"><li class="fa fa-trash"></li></a>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="content-divider"></div>

@@ -18,6 +18,11 @@
 		border:1px solid #7A1F5C;
 		color:#ffffff;
 	}
+	a.delete {
+		text-decoration:none;
+		color: #000000;
+		margin-left:10px;
+	}
 	a.tlink {
 		text-decoration:none;
 		color:#ffffff;
