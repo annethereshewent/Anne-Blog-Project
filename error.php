@@ -14,9 +14,8 @@
 	</style>
 </head>
 <body> 
-	<div class="content errorMsg" style="width:500px;color:grey">
+	<div class="content errorMsg">
 		<h1>Error: Page does not exist</h1> 
-		<p>Please try again!</p> 
 	</div>
 </body>
 </html>

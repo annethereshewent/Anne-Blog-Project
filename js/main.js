@@ -32,17 +32,19 @@ function openEditModal(pid) {
 	//need ajax to get contents
 	$.ajax({
 		type: "GET",
-		url: "fetch_post.php?pID=" + pid,
+		url: "/fetch_post.php?pID=" + pid,
 		dataType: "html",
 		success: function(data) {
-			if (data == "false")
-				return false;
-			openModal();
-			initEditor();
-			$("#editContents").editable("focus");
-			$("#editContents").editable("setHTML",data);
-			$("#newPost").attr("action", "/edit.php?pID=" + pid);
-			$("#blogSubmit").text("Edit"); 
+			if (data != "false") {
+				openModal();
+				initEditor();
+				$("#editContents").editable("focus");
+				$("#editContents").editable("setHTML",data);
+				$("#newPost").attr("action", "/edit.php?pID=" + pid);
+				$("#blogSubmit").text("Edit");
+
+				$("#postModal").next().html("Edit Post");
+			} 
 		}
 	});
 }

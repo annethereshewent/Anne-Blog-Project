@@ -35,6 +35,8 @@ class MyDB {
 			$row = $stmt->fetch();
 			echo $row["post"];
 		}
+		else
+			echo "something went wrong";
 		$statement = null;
 
 	}
@@ -211,6 +213,7 @@ class MyDB {
 			"userID"  => $userID
 		));
 	}
+	//public abstract function insert() { }
 
 	public function insert_comment($parentID,$pID,$comment) {
 		$comment = str_replace("\n", "<br>", $comment);
@@ -245,6 +248,7 @@ class MyDB {
 		}	
 		return true;
 	}
+	//make this protected
 	/*
 	when you *must* call a query directly.
 	uses prepared statements
@@ -346,8 +350,20 @@ class MyDB {
 	public function get_page_info() {
 		$temp = explode("/", $_SERVER["REQUEST_URI"]);
 		$info = array();
+
+		$info["action"] = isset($temp[1]) ? $temp[1] : "";
 		$info["blog"] = isset($temp[2]) ? $temp[2] : "";
-		$info["page"] = (isset($temp[3]) && is_numeric($temp[3])) ? $temp[3] : 1;
+		switch ($info['action']) {
+			case 'blog':
+				$info["page"] = (isset($temp[3]) && is_numeric($temp[3])) ? $temp[3] : 1; //third parameter is the page number
+				break;
+			case 'comments':
+				if (isset($temp[3]) && $temp[3] != '')
+					$info['pid'] = $temp[3]; //the third parameter will be the pid
+				else
+					Common::redirect("/error.php");
+				break;
+		}
 
 
 		//get page's user picture, title, description, etc
@@ -378,6 +394,7 @@ class MyDB {
 			echo "failure";
 	}
 	public function fetch_post_comments($postID) {
+
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 
 				from  comments c, users u
 				where postID=:postID

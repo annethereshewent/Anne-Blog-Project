@@ -16,12 +16,14 @@ class Comment {
 		//maybe implement user pictures at some point
 		$replytextboxID = "reply-textbox-".$this->id;
 		$replySelector = "'#".$replytextboxID."'";
-		return
 
+		$blog = explode('/', $_SERVER['REQUEST_URI'])[2];
+
+		return
 		'
 		<div class="comment"> 
 			<div  style="font-size:small;">	
-				<img src="images/user_icon.png">
+				<img src="/images/user_icon.png">
 				<b>'.$this->username.'</b>
 				<i>Posted on:</i> '.date("m/d/y h:i A",strtotime($this->created_on)).'
 			</div>
@@ -32,11 +34,12 @@ class Comment {
 		</div>
 		<div class="comment-container" id="'.$replytextboxID.'">
 			<hr>
-			<form method="post" action="comment_reply.php?parent='.$this->id.'&pid='.$this->postID.'">
+			<form method="post" action="/comment_reply.php?parent='.$this->id.'&pid='.$this->postID.'">
 				<textarea class="comment-text" name="comment" id="comment_reply" placeholder="Enter comment here..."></textarea>
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
 					<button type="submit" class="comment-submit btn primary sm">Reply</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn cancel sm" onClick="$('.$replySelector.').hide();return false;">Cancel</button>
 				</div>
+				<input type="hidden" name="blog" value="'.$blog.'">
 			</form>
 			<hr>
 		</div>

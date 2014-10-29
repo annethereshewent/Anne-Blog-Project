@@ -10,14 +10,10 @@ $num_rows = 0;
 
 //get posts
 //$pageNumber = Common::getPageNum();
+
 $info = $conn->get_page_info();
+$result = $conn->fetch_user_posts_by_page($info["page"]);
 
-
-
-if (isset($_GET["user"])) 
-	$result = $conn->fetch_user_posts_by_page($info["page"]);
-else 
-	Common::redirect("/error.php");
 
 
 
@@ -59,41 +55,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 	</style>
 </head>
 <body>
-<aside class="sidebar">
-    <div class="sidebar-main">
-        <div class="title">
-            <?= isset($info["blog_title"]) ? $info["blog_title"] : "" ?>
-        </div>
-        <?php if (isset($info["profile_pic"])) { ?>
-	        <div class="img-container">
-	            <img class="sidebar-image" src="<?= $info["profile_pic"] ?>">
-	        </div>
-        <?php } ?>
-        <div class="description">
-           <?= isset($info["description"]) ? $info["description"] : "" ?>
-        </div>
-        <nav class="links">
-            <ul>
-                <li><a href="/blog/<?= $info["blog"] ?>">home</a></li>
-                
-                <?php if (isset($_SESSION["login"])) {  ?> 
-                	<li><a href="#" onClick="openNewModal();return false;">new</a></li>
-                <?php } ?>            
-                
-                <li><a href="/account.php">control panel</a></li>
-                <li><a href="/contact.php">contact</a></li>
-                
-                <?php if (isset($_SESSION["login"])) { ?>
-                	<li><a href="/logout.php">logout</a></li>
-                <?php } ?> 
-            </ul>
-        </nav>
-
-            <div class="pagination">
-            	<?= Common::getPageFooter($info["page"], $post_count) ?>
-            </div>
-    </div>
-</aside>
+	<?php require "sidebar.php" ?>
 	<div class="main">
 		<?php if ($result != null) {
 			if (!$post_count) { ?>
@@ -113,7 +75,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 							<p style="font-size:small;"><i>(Edited on: <?= $row["edited_on"] ?>)</i></p>
 						<?php }?>
 						<div class="post-buttons" style="font-size:12px">
-							<a href="/comments.php?pid=<?= $row["id"] ?>"><?= Common::getCommentText($row["num_comments"]) ?></a>
+							<a href="/comments/<?= $info["blog"] ?>/<?= $row["id"] ?>"><?= Common::getCommentText($row["num_comments"]) ?></a>
 							&nbsp;&nbsp;
 							<?php if (isset($_SESSION["login"])) { ?>
 								<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>

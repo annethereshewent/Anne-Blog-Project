@@ -9,6 +9,8 @@ session_start();
 $conn = new MyDB($config["HOST"], $config["USERNAME"],$config["PASSWORD"],$config["DB"]) or die("Error connecting: ".$conn->error());
 
 
+
+
 class Common {
 	//parsing, useful javascript functions, general utility
 	public static function redirect($url) {

@@ -1,17 +1,11 @@
 <?php
 require "common.php";
 
-
-if (isset($_GET["pid"]) && $_GET["pid"] != "") {
-	$postID = $_GET["pid"];
-	$post = $conn->fetch_post($postID);
+$info = $conn->get_page_info();
+$post = $conn->fetch_post($info['pid']);
 	
-	$commentTree = $conn->fetch_post_comments($postID);
+$commentTree = $conn->fetch_post_comments($info['pid']);
 
-
-}
-else
-	Common::redirect("main.php");
 ?>
 <html>
 <head>	
@@ -56,39 +50,7 @@ else
 	<link href="/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<aside class="sidebar">
-    <div class="sidebar-main">
-        <div class="title">
-            <?= $_SESSION["title"] ?>.
-        </div>
-		<?php if (isset($_SESSION["userpic"])) { ?>
-	        <div class="img-container">
-	            <img class="sidebar-image" src="<?= $_SESSION["userpic"] ?>">
-	        </div>
-        <?php } ?>
-
-            <div class="description">
-               <?= $_SESSION["description"] ?>
-            </div>
-
-        <nav class="links">
-            <ul>
-                <li><a href="/blog/<?= $_SESSION["displayname"] ?>">home</a></li>
-                
-                <?php if (isset($_SESSION["login"])) {  ?> 
-                	<li><a href="#" onClick="openNewModal();return false;">new</a></li>
-                <?php } ?>            
-                
-                <li><a href="/login.php">control panel</a></li>
-                <li><a href="/contact.php">contact</a></li>
-                
-                <?php if (isset($_SESSION["login"])) { ?>
-                	<li><a href="/logout.php">logout</a></li>
-                <?php } ?> 
-            </ul>
-        </nav>
-    </div>
-</aside>
+	<?php require "sidebar.php" ?>
 	<div class="main">
 		<div class="content">
 			<p style="font-size:small;"><i>Creation Date: <?= date("m/d/y h:i A",strtotime($post["created_on"])) ?></i></p>
@@ -105,12 +67,13 @@ else
 		</div>
 		<div class="content-divider"></div>
 		<div class="content comment-container" id="new-textbox-container">
-			<form name="commentsubm" id="commentsubm" method="post" action="new_comment.php">
+			<form name="commentsubm" id="commentsubm" method="post" action="/new_comment.php">
 				<textarea name="comment" class="comment-text" id="comment-new" placeholder="Enter comment here..."></textarea>
-				<input type="hidden" name="pid" value="<?= $postID ?>">
+				<input type="hidden" name="pid" value="<?= $info['pid'] ?>">
 				<div class="buttonarea" style="margin-top:10px;margin-left:10px">
 					<button type="submit" class="comment-submit btn primary">Post</button>&nbsp;&nbsp;<button type="button" onClick="$('#new-textbox-container').hide()" class="btn cancel">Cancel</button>
 				</div>
+				<input type="hidden" name="blog" value="<?= $info['blog'] ?>">
 			</form>
 		</div>
 		<div class="content-divider"></div>
@@ -123,7 +86,7 @@ else
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$(".comment-submit").attr("disabled","true");
-			jQuery('.comment-text').on('input propertychange paste', function()  {
+			$	('.comment-text').on('input propertychange paste', function()  {
 				if ($(this).val() != "")
 					$(".comment-submit").removeAttr("disabled");
 				else
