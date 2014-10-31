@@ -137,6 +137,7 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
         <form name="profile" id="profile" method="post" action="update_general.php">
             <div class="profilepic-container">
                 <a href="#" onClick="openEditProfPicModal(); return false;" ><img class="profile-pic" title="Change Profile Picture" src="<?= $profile_pic ?>" alt="images/user_icon.png"></img></a>
+                <label class="control-label">Profile Picture</label>
             </div>
             <div class="inputs row">
                 <div class="col">
@@ -156,7 +157,7 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
                 </div>
             </div>
              <div class="inputs" style="text-align:center">
-                <button type="submit" class="btn confirm">Save Changes</button>
+                <button type="submit" class="btn confirm btn-lg">Save Changes</button>
             </div>
         </form>
          <hr>
@@ -190,7 +191,7 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
                     <p class="error"></p>
                 </div>
                 <div class="inputs" style="text-align:center">
-                    <button type="button" onClick="validate()" class="btn confirm">Save Changes</button>
+                    <button type="button" onClick="validate()" class="btn confirm btn-lg">Save Changes</button>
                 </div>
             </div>
         </form>
@@ -272,7 +273,7 @@ $profile_pic = isset($_SESSION["userpic"]) ? $_SESSION["userpic"] : "images/user
             </div> 
         </div>
          <div class="inputs">
-            <button style="margin-right:40px" type="submit" class="btn confirm">Save Changes</button>
+            <button style="margin-right:40px" type="submit" class="btn confirm">Save</button>
             <button type="button" class="btn cancel simplemodal-close">Cancel</button>
         </div>
         <div class="inputs">
