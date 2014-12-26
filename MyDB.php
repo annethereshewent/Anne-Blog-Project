@@ -396,9 +396,8 @@ class MyDB {
 	public function fetch_post_comments($postID) {
 
 		$sql = "select c.id, comment, parent, created_on, postID, displayname 
-				from  comments c, users u
-				where postID=:postID
-				and u.id = c.userID
+				from comments c, users u
+				where postID=:postID    
 				order by parent, id";
 		$stmt = $this->prepare($sql,array(
 			"postID" => $postID
@@ -445,7 +444,9 @@ class MyDB {
 		where id=:userid";
 		
 		$params["userid"] = $_SESSION["userid"];
-		$bool = $this->command($sql,$params);
+                return $this->command($sql,$params); //returns true or false for update command
+                
+                
 	}
 	public function savePassword($password) {
 		if ($password != "") {

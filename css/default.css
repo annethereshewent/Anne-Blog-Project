@@ -163,33 +163,36 @@
 	    font-family:cambria, serif;
 	    margin-left:10px;
 	}
-	.btn.warn {
-	    background:#FFCC00;
-	    color:#E68A2E;
-	}
-	.btn.confirm {
-		background:#0099CC;
-		color:#FFFFFF;
-	}
-	.btn.cancel {
-		background:#993366;
-		color:#FFFFFF;
-	}
-	.btn {
-		width:100px;
-		height:25px;
-		-webkit-border-radius: 5px;
-	    -moz-border-radius: 5px;
-	    border-radius: 5px;
-	}
-	.btn.primary {
-		background:#00B88A;
-		color:#E6F8F3;
-	}
-	.btn.primary:disabled {
-		background:#00B88A;
-		color:#3D997A;
-	}
-	.btn.sm {
-		width:75px;
-	}
+    .btn.warn {
+        background:#FFCC00;
+        color:#E68A2E;
+    }
+    .btn.confirm {
+        background:#0099CC;
+        color:#FFFFFF;
+    }
+    .btn.cancel {
+        background:#993366;
+        color:#FFFFFF;
+    }
+    .btn {
+        width:100px;
+        height:25px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    .btn.primary {
+        background:#00B88A;
+        color:#E6F8F3;
+    }
+    .btn.primary:disabled {
+        background:#00B88A;
+        color:#3D997A;
+    }
+    .btn.sm {
+        width:75px;
+    }
+    .btn-lg {
+        width:175px;
+    }
