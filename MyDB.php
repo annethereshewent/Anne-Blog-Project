@@ -395,10 +395,11 @@ class MyDB {
 	}
 	public function fetch_post_comments($postID) {
 
-		$sql = "select c.id, comment, parent, created_on, postID, displayname 
-				from comments c, users u
-				where postID=:postID    
-				order by parent, id";
+		$sql = "select c.id, comment, parent, created_on, postID, displayname "
+				 ."from comments c, users u "
+				 ."where postID=:postID and c.userID = u.id " 
+				 ."order by parent, id";
+				 
 		$stmt = $this->prepare($sql,array(
 			"postID" => $postID
 		));
