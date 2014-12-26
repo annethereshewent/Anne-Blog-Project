@@ -42,16 +42,16 @@ class MyDB {
 	}
 
 	public function edit_post($content, $pID) {
-			$sql = "update posts 
-					set post = :content,
-					edited_on = CURRENT_TIMESTAMP,
-					edited = 1
-					where id= :pID";
+		$sql = "update posts 
+				set post = :content,
+				edited_on = CURRENT_TIMESTAMP,
+				edited = 1
+				where id= :pID";
 
-			return $this->command($sql,array(
-				"content" => $content,
-				"pID"     => $pID
-			));
+		return $this->command($sql,array(
+			"content" => $content,
+			"pID"     => $pID
+		));
 	}
 
 	public function register_user($record) {
@@ -450,9 +450,9 @@ class MyDB {
 	public function savePassword($password) {
 		if ($password != "") {
 			$hash = password_hash($password, PASSWORD_DEFAULT);
-			$sql = "update users".
-					" set password = :password".
-					" where id = :id";
+			$sql = "update users"
+					." set password = :password"
+					." where id = :id";
 			return $this->command($sql, array(
 				"password" => $hash,
 				"id"       => $_SESSION["userid"]

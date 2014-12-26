@@ -19,11 +19,11 @@ if (in_array($_FILES["upload-pic"]["type"], $allowedExts) && $_FILES["upload-pic
 	$conn->update_profile_pic($directory.$filename);
 
 	echo "File uploaded successfully!";
-	//Common::redirect("account.php?success");
+	Common::redirect("account.php?success");
 }
 else {
 	echo "An error has occurred. Please contact your administrator";
-	//Common::redirect("account.php?error");
+	Common::redirect("account.php?error");
 }
 
 

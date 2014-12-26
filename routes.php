@@ -4,9 +4,9 @@ $routes = array(
 	'comments'	=> 'comments.php',
 	'account'	=> 'account.php'
 );
-$route = explode("/", $_SERVER["REQUEST_URI"]);
-if (isset($route[1])) {
-	$location = $route[1];
+$url = explode("/", $_SERVER["REQUEST_URI"]);
+if (isset($url[1])) {
+	$location = $url[1];
 	if (isset($routes[$location])) {
 		include $routes[$location];
 	} 
