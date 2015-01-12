@@ -225,7 +225,7 @@ class MyDB {
 			
 			$stmt = $this->DB->prepare($sql);
 			$stmt->execute(array(
-				"comment" => $comment,
+				"comment" => htmlspecialchars($comment),
 				"postID"  => $pID,
 				"userID"  => $_SESSION["userid"],
 				"parent"  => $parentID
@@ -445,7 +445,8 @@ class MyDB {
 		where id=:userid";
 		
 		$params["userid"] = $_SESSION["userid"];
-                return $this->command($sql,$params); //returns true or false for update command
+        
+        return $this->command($sql,$params); //returns true or false for update command
                 
                 
 	}

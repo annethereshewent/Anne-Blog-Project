@@ -36,7 +36,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 	<style>
 	#postModal {
 		width: 375px;
-		height: 420px;
+		height: 440px;
 	}
 	#editContents {
 		-webkit-border-radius: 15px;
@@ -103,10 +103,14 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 <div class="content" id="postModal" style="display:none">
 	<p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
 	<form name="newPost" id="newPost" method="post">
-			<div name="blogpost" id="editContents"></div>
-			<div  style="margin-left:15px;"class="buttonarea">
-		 	   <button type="button" onClick="submitContents()" id="blogSubmit" class="btn confirm sm" style="margin-right:20px">Post</button><button type="button" class="simplemodal-close btn cancel sm">Cancel</button>
-			</div>
-			<input type="hidden" name="htmlContent" id="htmlContent">
+		<div name="blogpost" id="editContents"></div>
+		<div style="margin-left:10px" class="tags-row">
+			<label class="control-label">Tags:</label>
+			<input type="text" name="tags" id="tags" class="tag-input control-text" style="width:350px">
+		</div>
+		<div  style="margin-left:15px;"class="buttonarea">
+	 	   <button type="button" onClick="submitContents()" id="blogSubmit" class="btn confirm sm" style="margin-right:20px">Post</button><button type="button" class="simplemodal-close btn cancel sm">Cancel</button>
+		</div>
+		<input type="hidden" name="htmlContent" id="htmlContent">
 	</form>
 </div>

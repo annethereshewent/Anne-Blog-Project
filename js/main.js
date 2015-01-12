@@ -15,16 +15,30 @@ function initEditor() {
 
 function submitContents() {
 	var content = $("#editContents").editable("getHTML").toString();
-	var str = "blah blah blah blah";
+
+	if (isEmpty(content)) {
+		alert("Your post is empty!");
+		return false;
+	}
+
 	//need to get youtube url and convert into an iframe object. This is for embedding youtube videos in posts
 	var youtube_match = parseYoutubeURL(content);
-	var youtube_id = '';
 	if (youtube_match != null) {
 		content = embedYoutube(youtube_match, content);
 	}
 	$("#htmlContent").val(content);
 	$("#newPost").submit();
 }
+
+//checks whether content is empty, after stripping HTML tags
+function isEmpty(content) {
+	//cheap hack to get text content (without html tags)
+	var sanitized_content = $("<div>").html(content).text();
+	//console.log("sanitized content = '" + sanitized_content + "'");
+	if (sanitized_content == '')
+		return true;
+	return false;
+}	
 function openModal() {
 	$("#postModal").fadeIn(500).modal({
 		opacity:70, 
@@ -45,10 +59,12 @@ function parseYoutubeURL(content) {
 function embedYoutube(match, content) {
 	//strips html from the youtube id. the div is there because otherwise it will think the text is a selector
 	var youtube_id = $("<div/>").html(match[7]).text();
+
+
 	//replace youtube url with iframe object
 	var youtube_vid = '<iframe src="http://www.youtube.com/v/' + youtube_id + '" width="375" height="211" frameborder="0" allowfullscreen></iframe>';
-	//console.log(youtube_match);	
-	//only going to work with youtube.com and youtu.be urls
+
+	//only going to work with youtube.com and youtu.be urls for now
 	return content.replace(/http(s){0,1}:\/\/.*youtu(\.be|be\.com)\/.*/, youtube_vid);
 }
 function openNewModal() {
