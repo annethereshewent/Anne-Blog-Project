@@ -47,9 +47,9 @@ function openModal() {
 	});
 }
 
-function openQuoteModal(pid) {
+function openQuoteModal(pid, username) {
 	getPostContents(pid, function(data) {
-		data = "<div class='block-quote'>" + data + "</div>";
+		data = "<div class='block-quote-outer'><a href='/blog/" + username + "'>" + username + "</a><div class='block-quote'>" + data + "</div></div>";
 
 		openModal();
 		initEditor();

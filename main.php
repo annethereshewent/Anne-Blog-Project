@@ -79,7 +79,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 							&nbsp;&nbsp;
 							<?php if (isset($_SESSION["login"])) { ?>
 								<a href="#" onClick="openEditModal(<?= $row["id"] ?>)">Edit Post</a>
-								<a href="#" onClick="openQuoteModal(<?= $row["id"] ?>)" style="margin-left:5px">Quote</a>
+								<a href="#" onClick="openQuoteModal(<?= $row["id"] ?> , '<?= $info['blog']?>')" style="margin-left:5px">Quote</a>
 								<a class="delete" href="#" onclick="deletePost(<?= $row["id"] ?>);return false"><li class="fa fa-trash"></li></a>
 							<?php } ?>
 						</div>

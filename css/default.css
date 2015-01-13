@@ -203,5 +203,10 @@ body {
 .block-quote {
 	border-left: 2px solid grey;
 	padding-left:10px;
+}
+.block-quote, .block-quote-outer {
 	margin-left:20px;
+}
+.block-quote-outer a {
+	color:black;
 }
