@@ -1,5 +1,27 @@
 $(function(){
 	initEditor();
+	$("#newPost").submit(function(e) {
+		var postData = $(this).serialize();
+		var postContent = $("#htmlContent").val();		
+
+		e.preventDefault();
+		$(e).unbind();
+		
+		$("#loading-post").show();
+		$("#blogSubmit").prop('disabled', true);
+
+		$.post(
+			"/newpost.php",
+			postData,
+			function(data) {
+				if (data) {
+					console.log("great success");
+					$.modal.close();
+					$(".main").prepend(data).fadeIn(500);
+				}
+			} 
+		)
+	}); 
 });
 
 function initEditor() {
@@ -49,6 +71,7 @@ function openModal() {
 
 function openQuoteModal(pid, username) {
 	getPostContents(pid, function(data) {
+		//alert($("<div>").html(data).find("<iframe>"));
 		data = "<div class='block-quote-outer'><a href='/blog/" + username + "'>" + username + "</a><div class='block-quote'>" + data + "</div></div>";
 
 		openModal();
@@ -65,10 +88,10 @@ function getPostContents(pid, callback) {
 	$.ajax({
 		type: "GET",
 		url: "/fetch_post.php?pID=" + pid,
-		dataType: "html",
+		dataType: "json",
 		success: function(data) {
-			if (data != "false") {
-				callback(data);
+			if (data.status != false) {
+				callback(data.content);
 			} 
 		}
 	});
@@ -122,7 +145,9 @@ function deletePost(pID) {
 			success: function(data) {
 				//console.log(data);
 				if (data == "success") {
-					$("#post_" + pID).fadeOut(500).slideUp(500);
+					$("#post_" + pID).fadeOut(500).slideUp(500, function() {
+						$("#post_"+ pID).next().css("margin-top", "-20px");
+					});
 				}
 				else {
 

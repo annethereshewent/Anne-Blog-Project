@@ -102,6 +102,7 @@ $post_count = $conn->get_number_of_posts($info["page"]);
 </body>
 
 <div class="content" id="postModal" style="display:none">
+	<img src="/images/loading.gif" style="display:none" id="loading-post" style="margin-left:100px">
 	<p style="color:#7A7ACC;margin-left:10px">Create a New Post</p>
 	<form name="newPost" id="newPost" method="post">
 		<div name="blogpost" id="editContents"></div>

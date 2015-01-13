@@ -33,10 +33,13 @@ class MyDB {
 
 		if ($stmt->rowCount() > 0) {
 			$row = $stmt->fetch();
-			echo $row["post"];
+			echo json_encode(array(
+				'success' => true,
+				'content' => $row["post"]
+			));
 		}
 		else
-			echo "something went wrong";
+			echo json_encode(array("success" => false));
 		$statement = null;
 
 	}
@@ -208,12 +211,21 @@ class MyDB {
 		$sql = "insert into posts (post,userID) 
 				values (:content, :userID)";
 		
-		return $this->command($sql, array(
-			"content" => $content,
-			"userID"  => $userID
-		));
+		if ($this->command($sql, array("content" => $content, "userID"  => $userID))) {
+			//get id for last inserted post
+			$last_id = $this->DB->lastInsertId();
+
+			$row = $this->fetch_post($last_id);
+			$post = new Post($row);
+
+			//use the post object's toString method to echo out the post. 
+			echo $post;
+		}
+		else 
+			echo "false";
+
 	}
-	//public abstract function insert() { }
+
 
 	public function insert_comment($parentID,$pID,$comment) {
 		$comment = str_replace("\n", "<br>", $comment);
@@ -265,7 +277,7 @@ class MyDB {
 
 		if ($pID == "")
 			return null;
-		$sql = "select id, post, created_on, edited_on, edited 
+		$sql = "select id, post, created_on, edited_on, edited, num_comments, userID 
 				from posts 
 				where id = :id";
 
