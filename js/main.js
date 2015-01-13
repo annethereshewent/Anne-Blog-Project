@@ -47,6 +47,34 @@ function openModal() {
 	});
 }
 
+function openQuoteModal(pid) {
+	getPostContents(pid, function(data) {
+		data = "<div class='block-quote'>" + data + "</div>";
+
+		openModal();
+		initEditor();
+		$("#editContents").editable("focus");
+		$("#editContents").editable("insertHTML",data, true);
+		$("#blog-textarea").html(data);
+		$("#newPost").attr("action", "/newpost.php");
+	});
+	
+}
+
+function getPostContents(pid, callback) {
+	$.ajax({
+		type: "GET",
+		url: "/fetch_post.php?pID=" + pid,
+		dataType: "html",
+		success: function(data) {
+			if (data != "false") {
+				callback(data);
+			} 
+		}
+	});
+
+}
+
 //returns array of matches from the regex. These can be used to embed the video or whatever
 function parseYoutubeURL(content) {
 	var regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -73,22 +101,15 @@ function openNewModal() {
 }
 function openEditModal(pid) {
 	//need ajax to get contents
-	$.ajax({
-		type: "GET",
-		url: "/fetch_post.php?pID=" + pid,
-		dataType: "html",
-		success: function(data) {
-			if (data != "false") {
-				openModal();
-				initEditor();
-				$("#editContents").editable("focus");
-				$("#editContents").editable("setHTML",data);
-				$("#newPost").attr("action", "/edit.php?pID=" + pid);
-				$("#blogSubmit").text("Edit");
+	getPostContents(pid, function(data) {
+		openModal();
+		initEditor();
+		$("#editContents").editable("focus");
+		$("#editContents").editable("setHTML",data);
+		$("#newPost").attr("action", "/edit.php?pID=" + pid);
+		$("#blogSubmit").text("Edit");
 
-				$("#postModal").next().html("Edit Post");
-			} 
-		}
+		$("#postModal").next().html("Edit Post");
 	});
 }
 function deletePost(pID) {
