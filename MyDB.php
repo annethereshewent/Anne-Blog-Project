@@ -354,7 +354,7 @@ class MyDB {
 		$stmt = $this->prepare($sql, array(
 			"display" => $username,
 			"start"   => $start,
-			"fin"     => 20
+			"fin"     => 16
 		));
 		$row = $stmt->fetch();
 		return $row["total"];
@@ -422,9 +422,9 @@ class MyDB {
 	}
 
 	public function update_profile_pic($path) {
-		$sql = "update users".
-				" set profile_pic = :path".
-				" where id = :userid";
+		$sql = "update users "
+				."set profile_pic = :path "
+				."where id = :userid";
 		$_SESSION["userpic"] = $path;
 		return $this->command($sql, array(
 			"path"   => $path,

@@ -14,20 +14,30 @@ $(function(){
 			"/newpost.php",
 			postData,
 			function(data) {
+				//console.log("hello?");
 				if (data) {
-					console.log("great success");
-					$.modal.close();
-					$(".main").prepend(data).fadeIn(500);
+					//console.log("great success");
+					$("#postModal").dialog("close");
+					$(".main").prepend(data).fadeIn(1000);
+					$("#blogSubmit").prop('disabled', false);
+					$("#loading-post").hide();
+					$("#editContents").editable("setHTML", "");
 				}
 			} 
 		)
 	}); 
+
+	$("#post-cancel-btn").click(function() {
+		$("#editContents").editable("setHTML", "");
+		$("#postModal").dialog("close");
+	});
 });
 
 function initEditor() {
 	$('#editContents').editable({
 		inlineMode: false,
 		paragraphy: true,
+		placeholder:"",
 		width: "350px",
 		height: "250px",
 		buttons: ["indent", "outdent", "strikeThrough", "bold", "italic", "underline", "insertUnorderedList", "insertOrderedList"],
@@ -62,10 +72,20 @@ function isEmpty(content) {
 	return false;
 }	
 function openModal() {
-	$("#postModal").fadeIn(500).modal({
+	/*$("#postModal").fadeIn(500).modal({
 		opacity:70, 
 		overlayClose:true,
 		position: ["25%", "25%"]
+	});*/
+
+	$("#postModal").fadeIn(500).dialog({
+		autoOpen:true,
+		closeOnEscape:true,
+		modal:true,
+		resizable:false,
+		width:410,
+		height:480,
+		position: {at:"top"}
 	});
 }
 
@@ -145,8 +165,9 @@ function deletePost(pID) {
 			success: function(data) {
 				//console.log(data);
 				if (data == "success") {
-					$("#post_" + pID).fadeOut(500).slideUp(500, function() {
-						$("#post_"+ pID).next().css("margin-top", "-20px");
+					$("#post_" + pID).fadeOut(1000).slideUp(1000, function() {
+						//this is setting the deleted post's content divider height to 0. otherwise it looks bad
+						$("#post_"+ pID).next().css("height", "0px");
 					});
 				}
 				else {

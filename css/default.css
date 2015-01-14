@@ -210,3 +210,21 @@ body {
 .block-quote-outer a {
 	color:black;
 }
+.no-close, .ui-dialog-titlebar-close {
+	display:none;
+}
+.ui-dialog-titlebar {
+	display:none;
+}
+.ui-widget button {
+	font-size:14px !important; 
+	font-family:"Calibri" !important;
+}
+.ui-dialog, .ui-dialog-content {
+	font-size:16px;
+	font-family:"Calibri";
+}
+.ui-dialog {
+	margin-top:200px;
+	border:1px solid grey;
+}
