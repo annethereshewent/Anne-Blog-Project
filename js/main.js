@@ -21,14 +21,12 @@ $(function(){
 					$(".main").prepend(data).fadeIn(1000);
 					$("#blogSubmit").prop('disabled', false);
 					$("#loading-post").hide();
-					$("#editContents").editable("setHTML", "");
 				}
 			} 
 		)
 	}); 
 
 	$("#post-cancel-btn").click(function() {
-		$("#editContents").editable("setHTML", "");
 		$("#postModal").dialog("close");
 	});
 });
@@ -85,7 +83,10 @@ function openModal() {
 		resizable:false,
 		width:410,
 		height:480,
-		position: {at:"top"}
+		position: {at:"top"},
+		close: function() {
+			$("#editContents").editable("setHTML", "");
+		}
 	});
 }
 
@@ -171,7 +172,6 @@ function deletePost(pID) {
 					});
 				}
 				else {
-
 					alert("an error has occurred");
 				}
 			}
